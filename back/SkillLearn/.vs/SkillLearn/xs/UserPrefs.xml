@@ -1,0 +1,24 @@
+﻿<Properties StartupConfiguration="{24F2ECB4-F1C0-4A6B-A27D-726F401AB8EC}|Default">
+  <MonoDevelop.Ide.Workbench>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="SkillLearn" expanded="True">
+            <Node name="SkillLearn.Api" expanded="True">
+              <Node name="WeatherForecast.cs" selected="True" />
+            </Node>
+            <Node name="SkillLearn.Data" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.SkillLearn.Data FirstBuild="True" />
+  <MonoDevelop.Ide.ItemProperties.SkillLearn.Api FirstBuild="True" PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
