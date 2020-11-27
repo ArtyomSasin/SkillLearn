@@ -1,0 +1,34 @@
+.container {
+  width: 600px;
+  font-size: 18px;
+  padding: 50px 20%;
+}
+
+.warn {
+  display: flex;
+  align-items: center;
+  margin: 50px;
+  margin-left: 80px;
+  font-size: 42px;
+  color: red;
+}
+
+.warn .icon {
+  margin-right: 16px;
+}
+
+.message {
+  line-height: 2;
+}
+
+.actions {
+  margin-top: 20px;
+}
+
+.actions :nth-child(n) {
+  margin-right: 40px;
+}
+
+.actions :last-child() {
+  margin-right: 0;
+}

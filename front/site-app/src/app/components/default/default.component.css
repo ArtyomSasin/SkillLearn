@@ -1,0 +1,22 @@
+.posts {
+  display: block;
+  width: 30%;
+}
+
+.posts-header {
+  font-size: 24px;
+}
+
+.posts-content {
+  display: block;
+}
+
+.menu {
+  display: block;
+}
+
+.footer{
+  position: relative;
+  bottom: 0;
+  display: block;
+}

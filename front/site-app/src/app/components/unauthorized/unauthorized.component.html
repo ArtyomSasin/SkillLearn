@@ -1,0 +1,15 @@
+<div class="container">
+  <div class="warn">
+    <mat-icon [inline]="true" class="icon">warning</mat-icon>
+    <mat-label class="label">Внимание!</mat-label>
+  </div>
+  <div class="message">
+    Вы пытаетесь получить досутп к защищенному ресурсу. <br />Войдите под своей
+    уетной записью или зарегистрируйтесь.
+  </div>
+
+  <div class="actions">
+    <button mat-stroked-button (click)="back()" color="primary">Назад</button>
+    <button mat-raised-button (click)="login()" color="primary">Войти</button>
+  </div>
+</div>
