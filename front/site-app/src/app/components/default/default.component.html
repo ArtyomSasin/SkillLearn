@@ -35,17 +35,27 @@
   <h2>Прокачай свои навыки!</h2>
 
   <div class="skill-groups">
-    <h4>Разделы</h4>
+    <div class="skill-groups-label">Выбрерите раздел:</div>
     <mat-chip-list [selectable]="true" [multiple]="true">
       <mat-chip
         color="primary"
         *ngFor="let group of skillGroups"
         [selected]="group.isSelected"
         (click)="group.isSelected = !group.isSelected"
-        (selectionChange)="selectSkillGroup($event, group)"
         >{{ group.title }}</mat-chip
       >
     </mat-chip-list>
+    <div class="skill-find" [matTooltip]="canSearch ? '' : 'Выберите раздел'">
+      <button
+        class="button-skill-find"
+        mat-stroked-button
+        [disabled]="!canSearch"
+        color="primary"
+      >
+        <mat-icon>search</mat-icon>
+        <span>Найти навыки</span>
+      </button>
+    </div>
   </div>
   <footer class="footer"></footer>
 </div>

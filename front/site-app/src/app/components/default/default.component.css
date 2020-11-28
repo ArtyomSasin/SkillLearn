@@ -26,6 +26,23 @@ h2 {
   padding-top: 20px;
 }
 
+.skill-groups-label {
+  font-size: 18px;
+  padding: 10px 0;
+}
+
+.skill-find {
+  margin-top: 20px;
+  display: inline-block;
+}
+.button-skill-find {
+  border: 2px solid;
+  border-radius: 20px;
+}
+.button-skill-find span {
+  margin: 0 15px;
+}
+
 .footer {
   position: absolute;
   bottom: 0;
