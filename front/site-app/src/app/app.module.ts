@@ -22,6 +22,7 @@ import { EmailComponent } from './components/shared/email/email.component';
 import { ProgressBarComponent } from './components/shared/progress-bar/progress-bar.component';
 import { RouterModule } from '@angular/router';
 import { UnAuthorizeGuard } from './unauthorize.guard';
+import { CourseCardSmallComponent } from './components/shared/course-card-small/course-card-small.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyD84KD37S_La_RWQiGwJiZQgpgFtxPm56s',
@@ -46,6 +47,7 @@ firebase.initializeApp(firebaseConfig);
     PasswordComponent,
     EmailComponent,
     ProgressBarComponent,
+    CourseCardSmallComponent,
     CustomErrorPipe,
   ],
   imports: [

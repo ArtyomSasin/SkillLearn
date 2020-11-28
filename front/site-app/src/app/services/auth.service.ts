@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import { UserService } from './user.service';
 
 const _PERSISTENCE = firebase.auth.Auth.Persistence.LOCAL;
 @Injectable({
@@ -10,13 +11,26 @@ const _PERSISTENCE = firebase.auth.Auth.Persistence.LOCAL;
 export class AuthService {
   private currentUser: firebase.User | null = null;
 
-  constructor(private afAuth: AngularFireAuth) {
+  onAuthUserSuccess = new EventEmitter<boolean>();
+
+  constructor(
+    private afAuth: AngularFireAuth,
+    private userService: UserService,
+  ) {
     // Подписываемся на onAuthStateChanged
-    firebase.auth().onAuthStateChanged(user => {
+    firebase.auth().onAuthStateChanged(async user => {
       this.currentUser = user;
-      // если это новый пользователь - осуществляем анонимный вход
-      if (!user) {
-        this.loginAnonymous();
+      try {
+        // если это новый пользователь - осуществляем анонимный вход
+        if (!user) {
+          this.onAuthUserSuccess?.emit(false);
+          await this.loginAnonymous();
+        }
+        else {
+          this.onAuthUserSuccess?.emit(true);
+        }
+      } catch (e) {
+        console.warn('error: ', e);
       }
     });
   }
@@ -99,6 +113,10 @@ export class AuthService {
       anonymousUser?.linkWithCredential(credential)
         .then(usercred => {
           console.log('Anonymous account successfully upgraded', usercred.user);
+          if (usercred.user?.uid) {
+            console.log('createUserData');
+            this.userService.createUserData(usercred.user?.uid);
+          }
           resolve(usercred);
         }).catch(error => {
           console.error('Error upgrading anonymous account', error);

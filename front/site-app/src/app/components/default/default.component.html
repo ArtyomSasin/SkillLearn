@@ -36,12 +36,16 @@
 
   <div class="skill-groups">
     <div class="skill-groups-label">Выбрерите раздел:</div>
-    <mat-chip-list [selectable]="true" [multiple]="true">
+    <mat-chip-list
+      *ngIf="skillGroups$ | async; let groups"
+      [selectable]="true"
+      [multiple]="true"
+    >
       <mat-chip
         color="primary"
-        *ngFor="let group of skillGroups"
-        [selected]="group.isSelected"
-        (click)="group.isSelected = !group.isSelected"
+        *ngFor="let group of groups"
+        [selected]="isSelectedSkillGroup(group)"
+        (click)="changeSkillGroup(group)"
         >{{ group.title }}</mat-chip
       >
     </mat-chip-list>
@@ -51,10 +55,17 @@
         mat-stroked-button
         [disabled]="!canSearch"
         color="primary"
+        (click)="loadCourses()"
       >
         <mat-icon>search</mat-icon>
         <span>Найти навыки</span>
       </button>
+    </div>
+    <div class="course-list">
+      <app-course-card-small
+        *ngFor="let course of courses"
+        [course]="course"
+      ></app-course-card-small>
     </div>
   </div>
   <footer class="footer"></footer>

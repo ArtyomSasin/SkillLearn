@@ -25,21 +25,12 @@ export class RegisterComponent implements OnInit {
   get password(): FormControl {
     return this.form.controls.password as FormControl;
   }
-  previousUrl?: string;
   constructor(
     private authService: AuthService,
     private snackBar: MatSnackBar,
     private fb: FormBuilder,
     private router: Router,
   ) {
-    router.events
-      .subscribe(event => {
-        console.log('event:', event);
-        if (event instanceof NavigationEnd) {
-          console.log('prev:', event.url);
-          this.previousUrl = event.url;
-        }
-      });
   }
 
   ngOnInit(): void {

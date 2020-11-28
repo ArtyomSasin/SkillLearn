@@ -8,7 +8,7 @@ export class Course {
     author: Author;
     category: any[];
     /** Уроки */
-    lessons: Lesson[];
+    lessons?: Lesson[];
 
     constructor(
         id: number,
@@ -16,13 +16,11 @@ export class Course {
         description: string,
         author: Author,
         category: any[],
-        lessons: Lesson[],
     ) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.author = author;
         this.category = category;
-        this.lessons = lessons;
     }
 }

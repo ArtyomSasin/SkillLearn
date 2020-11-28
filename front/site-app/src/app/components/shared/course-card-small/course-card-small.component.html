@@ -1,0 +1,8 @@
+<div>{{ course?.title }}</div>
+<div>Описание:</div>
+<div>{{ course?.description }}</div>
+<div>Количество уроков: {{ course?.lessons?.length }}</div>
+<a (click)="showLessons = !showLessons">Посмотреть уроки</a>
+<div>
+  <a [routerLink]="['/course', course?.id]">Перейти к курсу</a>
+</div>

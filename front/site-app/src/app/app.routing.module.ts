@@ -6,6 +6,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { UserComponent } from './components/user/user.component';
 import { UnAuthorizeGuard } from './unauthorize.guard';
+import { CourseModule } from './components/course/course.module';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [UnAuthorizeGuard] },
@@ -16,7 +17,10 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes),
+    CourseModule,
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

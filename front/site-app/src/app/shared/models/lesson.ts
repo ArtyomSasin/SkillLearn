@@ -1,11 +1,11 @@
 /** Типы уроков */
 export enum LessonTypes {
     /** Теория */
-    theory,
+    theory = 1,
     /** Практика */
-    practice,
+    practice = 2,
     /** Видео */
-    video,
+    video = 3,
 }
 
 /** Базовый класс урока */
