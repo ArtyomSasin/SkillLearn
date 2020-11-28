@@ -1,4 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Raleway&display=swap");
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+h1 {
+  color: #122947;
+  font-family: Raleway;
+  text-transform: lowercase;
+  font-size: 58px !important;
+}
+
+.control > .mat-form-field {
+  width: 250px !important;
+}

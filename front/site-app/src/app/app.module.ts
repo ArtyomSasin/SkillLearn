@@ -17,6 +17,10 @@ import firebase from 'firebase/app';
 import { AuthService } from './services/auth.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomErrorPipe } from './shared/pipes/custom-error.pipe';
+import { PasswordComponent } from './components/shared/password/password.component';
+import { EmailComponent } from './components/shared/email/email.component';
+import { ProgressBarComponent } from './components/shared/progress-bar/progress-bar.component';
+import { RouterModule } from '@angular/router';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyD84KD37S_La_RWQiGwJiZQgpgFtxPm56s',
@@ -38,11 +42,15 @@ firebase.initializeApp(firebaseConfig);
     LoginComponent,
     RegisterComponent,
     UserComponent,
+    PasswordComponent,
+    EmailComponent,
+    ProgressBarComponent,
     CustomErrorPipe,
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    RouterModule,
     ReactiveFormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,

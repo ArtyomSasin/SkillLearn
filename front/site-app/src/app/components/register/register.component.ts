@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { getControlByError, getMessageByError } from 'src/app/shared/validation-map';
 
@@ -19,12 +19,28 @@ export class RegisterComponent implements OnInit {
 
   showProgress = false;
 
+  get email(): FormControl {
+    return this.form.controls.email as FormControl;
+  }
+  get password(): FormControl {
+    return this.form.controls.password as FormControl;
+  }
+  previousUrl?: string;
   constructor(
     private authService: AuthService,
     private snackBar: MatSnackBar,
     private fb: FormBuilder,
     private router: Router,
-  ) { }
+  ) {
+    router.events
+      .subscribe(event => {
+        console.log('event:', event);
+        if (event instanceof NavigationEnd) {
+          console.log('prev:', event.url);
+          this.previousUrl = event.url;
+        }
+      });
+  }
 
   ngOnInit(): void {
   }

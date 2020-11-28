@@ -1,1 +1,13 @@
-<p>I am LoginComponent</p>
+<app-progress-bar [show]="showProgress"></app-progress-bar>
+<form *ngIf="!showProgress" [formGroup]="form" class="form">
+  <h1>Вход</h1>
+  <app-email [control]="email" class="control"></app-email>
+  <app-password [control]="password" class="control"></app-password>
+
+  <div class="actions">
+    <button mat-raised-button color="primary" (click)="login()">Войти</button>
+  </div>
+  <a [routerLink]="['/register']" color="primary" class="register-link"
+    >Еще нет учетной записи? Зарегистрируйся!</a
+  >
+</form>

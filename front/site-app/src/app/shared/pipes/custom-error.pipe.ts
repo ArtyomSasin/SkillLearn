@@ -5,7 +5,7 @@ import { getMessageByError } from '../validation-map';
 @Pipe({ name: 'customError' })
 export class CustomErrorPipe implements PipeTransform {
 
-    transform(errors: ValidationErrors | null): string | null {
+    transform(errors: ValidationErrors | null | undefined): string | null {
         if (errors) {
             const arr = Object.keys(errors ?? []);
             return arr.map(error => {

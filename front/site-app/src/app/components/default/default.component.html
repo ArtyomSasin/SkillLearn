@@ -1,11 +1,51 @@
 <header>
-  <H1> SkillLearn - "Прокачай свой навык"! </H1>
+  <mat-toolbar color="primary">
+    <button mat-icon-button>
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>SkillLearn</span>
+    <span class="spacer"></span>
+    <!--<button mat-icon-button>
+      <mat-icon>favorite</mat-icon>
+    </button>
+    <button mat-icon-button>
+      <mat-icon>share</mat-icon>
+    </button>-->
+    <button mat-icon-button [matMenuTriggerFor]="account">
+      <span *ngIf="userName">{{ userName }}</span>
+      <mat-icon>person</mat-icon>
+    </button>
+
+    <mat-menu #account>
+      <a *ngIf="!isLogged" mat-menu-item [routerLink]="['/login']">
+        <span>Войти</span>
+      </a>
+      <a *ngIf="!isLogged" mat-menu-item [routerLink]="['/register']">
+        <span>Зарегистрироваться</span>
+      </a>
+      <button *ngIf="isLogged" mat-menu-item (click)="logout()">
+        <span>Выйти</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar>
 </header>
-<div class="content">
-  <div class="menu">Меню</div>
-  <div class="posts">
-    <div class="posts-header">Посты</div>
-    <div class="posts-content"></div>
+<h1>SkillLearn</h1>
+
+<div class="container">
+  <h2>Прокачай свои навыки!</h2>
+
+  <div class="skill-groups">
+    <h4>Разделы</h4>
+    <mat-chip-list [selectable]="true" [multiple]="true">
+      <mat-chip
+        color="primary"
+        *ngFor="let group of skillGroups"
+        [selected]="group.isSelected"
+        (click)="group.isSelected = !group.isSelected"
+        (selectionChange)="selectSkillGroup($event, group)"
+        >{{ group.title }}</mat-chip
+      >
+    </mat-chip-list>
   </div>
+  <footer class="footer"></footer>
 </div>
-<footer></footer>

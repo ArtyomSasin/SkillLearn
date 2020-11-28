@@ -27,6 +27,11 @@ export class AuthService {
       });
   }
 
+  /** Вход по электронной почте */
+  loginByEmail(email: string, password: string): Promise<any> {
+    return firebase.auth().signInWithEmailAndPassword(email, password);
+  }
+
   /** Проверка залогиненности пользователя (анонимный пользователь не считается залогиненым) */
   isLoggedIn(): boolean {
     return this.user != null
@@ -39,11 +44,6 @@ export class AuthService {
     const anonymous = this.user;
     const credential = firebase.auth.EmailAuthProvider.credential(email, password);
     return this.linkWithCredentail(anonymous, credential);
-
-    firebase.auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(res => this.linkWithCredentail(anonymous, credential))
-      .catch(err => console.error(err));
   }
 
   /** Осуществляет вход с помощью учетной записи google */
@@ -55,8 +55,12 @@ export class AuthService {
     provider.addScope('email');
 
     return this.afAuth.signInWithPopup(provider)
-      .then(res => this.linkWithCredentail(anonymous, res?.credential))
-      .catch(err => console.error(err));
+      .then(res => this.linkWithCredentail(anonymous, res?.credential));
+  }
+
+
+  logOut(): Promise<void> {
+    return this.afAuth.signOut();
   }
 
   /** Связывает анонимного пользователя anonymousUser с учетными данными credential */
