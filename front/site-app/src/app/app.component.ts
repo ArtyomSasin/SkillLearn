@@ -10,14 +10,6 @@ export class AppComponent implements OnInit {
 
   constructor(private authService: AuthService) { }
 
-  async ngOnInit(): Promise<void> {
-    console.log('user is logged: ', this.authService.isLoggedIn());
-    if (this.authService.isLoggedIn()) {
-      console.log('user login: ', this.authService.user);
-    }
-    else {
-      await this.authService.loginAnonymous();
-      console.log('user login anonimus: ', this.authService.user);
-    }
+  ngOnInit(): void {
   }
 }

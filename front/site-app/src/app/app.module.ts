@@ -21,6 +21,7 @@ import { PasswordComponent } from './components/shared/password/password.compone
 import { EmailComponent } from './components/shared/email/email.component';
 import { ProgressBarComponent } from './components/shared/progress-bar/progress-bar.component';
 import { RouterModule } from '@angular/router';
+import { UnAuthorizeGuard } from './unauthorize.guard';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyD84KD37S_La_RWQiGwJiZQgpgFtxPm56s',
@@ -64,6 +65,7 @@ firebase.initializeApp(firebaseConfig);
   providers: [
     AuthorizeGuard,
     AuthService,
+    UnAuthorizeGuard,
   ],
   bootstrap: [AppComponent]
 })

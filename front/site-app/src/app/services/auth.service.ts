@@ -2,65 +2,89 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+
+const _PERSISTENCE = firebase.auth.Auth.Persistence.LOCAL;
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private currentUser: firebase.User | null = null;
 
-  constructor(private afAuth: AngularFireAuth) { }
-
-  get user(): firebase.User | null {
-    return firebase.auth().currentUser;
+  constructor(private afAuth: AngularFireAuth) {
+    // Подписываемся на onAuthStateChanged
+    firebase.auth().onAuthStateChanged(user => {
+      this.currentUser = user;
+      // если это новый пользователь - осуществляем анонимный вход
+      if (!user) {
+        this.loginAnonymous();
+      }
+    });
   }
 
-  /** Анонимный вход */
-  loginAnonymous(): Promise<any> {
-    return firebase.auth().signInAnonymously()
-      .then((userCredential) => console.log('userCredential: ', userCredential))
-      .catch((error) => {
-        const errorCode = error.code;
-        if (errorCode === 'auth/operation-not-allowed') {
-          alert('You must enable Anonymous auth in the Firebase Console.');
-        } else {
-          console.error(error);
-        }
-      });
+  /** Получение текщуего пользователя */
+  public get user(): firebase.User | null {
+    return this.currentUser;
   }
 
   /** Вход по электронной почте */
-  loginByEmail(email: string, password: string): Promise<any> {
-    return firebase.auth().signInWithEmailAndPassword(email, password);
+  public async loginByEmail(email: string, password: string): Promise<any> {
+    const user = this.user;
+    await firebase.auth().setPersistence(_PERSISTENCE);
+    return firebase.auth().signInWithEmailAndPassword(email, password).then(async credentail => {
+      if (user?.isAnonymous) {
+        // удаляем анонимного пользователя
+        await user.delete();
+      }
+      return credentail;
+    });
   }
 
   /** Проверка залогиненности пользователя (анонимный пользователь не считается залогиненым) */
-  isLoggedIn(): boolean {
+  public isLoggedIn(): boolean {
     return this.user != null
       ? (this.user.isAnonymous ? false : true)
       : false;
   }
 
   /** Регистрирует учетную запись пользователя по email и password */
-  registerByEmail(email: string, password: string): Promise<any> {
+  public registerByEmail(email: string, password: string): Promise<any> {
     const anonymous = this.user;
     const credential = firebase.auth.EmailAuthProvider.credential(email, password);
-    return this.linkWithCredentail(anonymous, credential);
+    return firebase.auth().setPersistence(_PERSISTENCE).then(persist => this.linkWithCredentail(anonymous, credential));
   }
 
   /** Осуществляет вход с помощью учетной записи google */
-  googleLogin(): Promise<any> {
+  public googleLogin(): Promise<any> {
     const anonymous = this.user;
 
     const provider = new firebase.auth.GoogleAuthProvider();
     provider.addScope('profile');
     provider.addScope('email');
 
-    return this.afAuth.signInWithPopup(provider)
-      .then(res => this.linkWithCredentail(anonymous, res?.credential));
+    return firebase.auth().setPersistence(_PERSISTENCE).then(persist => this.afAuth.signInWithPopup(provider)
+      .then(res => this.linkWithCredentail(anonymous, res?.credential)));
+  }
+
+  /** Выход из учетной записи */
+  public logOut(): Promise<void> {
+    return this.afAuth.signOut();
   }
 
 
-  logOut(): Promise<void> {
-    return this.afAuth.signOut();
+  /** Анонимный вход */
+  private loginAnonymous(): Promise<any> {
+    return firebase.auth().setPersistence(_PERSISTENCE).then(persist =>
+      firebase.auth().signInAnonymously()
+        .then((userCredential) => console.log('userCredential: ', userCredential))
+        .catch((error) => {
+          const errorCode = error.code;
+          if (errorCode === 'auth/operation-not-allowed') {
+            alert('You must enable Anonymous auth in the Firebase Console.');
+          } else {
+            console.error(error);
+          }
+        })
+    );
   }
 
   /** Связывает анонимного пользователя anonymousUser с учетными данными credential */
