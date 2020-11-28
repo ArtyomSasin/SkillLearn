@@ -1,4 +1,6 @@
-<form [formGroup]="form" class="row">
+<mat-progress-bar *ngIf="showProgress" mode="indeterminate"></mat-progress-bar>
+
+<form *ngIf="!showProgress" [formGroup]="form" class="row">
   <mat-form-field>
     <mat-label>Электронная почта</mat-label>
     <input matInput formControlName="email" />

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { getControlByError, getMessageByError } from 'src/app/shared/validation-map';
 
@@ -16,10 +17,13 @@ export class RegisterComponent implements OnInit {
     password: new FormControl(null, [Validators.required, Validators.minLength(6)]),
   });
 
+  showProgress = false;
+
   constructor(
     private authService: AuthService,
     private snackBar: MatSnackBar,
     private fb: FormBuilder,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -27,9 +31,10 @@ export class RegisterComponent implements OnInit {
 
   register(): void {
     if (this.form.valid) {
+      this.showProgress = true;
       this.authService.registerByEmail(this.form.controls.email.value, this.form.controls.password.value)
         .then(res => {
-          console.log(res);
+          this.router.navigate(['']);
         }, err => {
           console.error(err);
           const code = err?.code;
@@ -50,6 +55,7 @@ export class RegisterComponent implements OnInit {
             });
           }
         });
+      this.showProgress = false;
     }
   }
 }
