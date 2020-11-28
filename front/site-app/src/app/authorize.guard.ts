@@ -14,15 +14,11 @@ export class AuthorizeGuard implements CanActivate {
     canActivate(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
-    ): Observable<boolean> {
-        return this.authService.isLoggedIn.pipe(
-            map((isAuthorized: boolean) => {
-                if (!isAuthorized) {
-                    this.router.navigate(['/unauthorized']);
-                    return false;
-                }
-                return true;
-            })
-        );
+    ): boolean {
+        const isAuthorized = this.authService.isLoggedIn();
+        if (!isAuthorized) {
+            this.router.navigate(['/login']);
+        }
+        return isAuthorized;
     }
 }

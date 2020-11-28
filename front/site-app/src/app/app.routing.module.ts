@@ -2,12 +2,14 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthorizeGuard } from './authorize.guard';
 import { DefaultComponent } from './components/default/default.component';
-import { PostDetailComponent } from './components/post-detail/post-detail.component';
-import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { UserComponent } from './components/user/user.component';
 
 const routes: Routes = [
-  { path: 'post/:id', component: PostDetailComponent, canActivate: [AuthorizeGuard] },
-  { path: 'unauthorized', component: UnauthorizedComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'user', component: UserComponent, canActivate: [AuthorizeGuard] },
   { path: '', component: DefaultComponent },
   { path: '**', component: DefaultComponent },
 ];

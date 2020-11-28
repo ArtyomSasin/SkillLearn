@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  AUTH_URL: 'https://localhost:5001',
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 };
 
 /*
