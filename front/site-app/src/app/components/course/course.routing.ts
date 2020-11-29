@@ -4,7 +4,7 @@ import { LessonsComponent } from './lesson/lesson.component';
 
 const routes: Routes = [
   { path: 'course/:courseId/lesson/:lessonId', component: LessonsComponent },
-  { path: 'course/:id', component: CourseComponent },
+  { path: 'course/:courseId', component: CourseComponent },
 ];
 
 export const CourseRoutes = RouterModule.forChild(routes);

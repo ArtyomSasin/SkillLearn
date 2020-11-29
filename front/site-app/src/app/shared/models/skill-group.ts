@@ -1,9 +1,9 @@
 export class SkillGroup {
-    id: number;
+    id: string;
     title: string;
 
     constructor(
-        id: number,
+        id: string,
         title: string,
     ) {
         this.id = id;

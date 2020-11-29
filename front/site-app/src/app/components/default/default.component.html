@@ -58,10 +58,12 @@
         (click)="loadCourses()"
       >
         <mat-icon>search</mat-icon>
-        <span>Найти навыки</span>
+        <span>Найти курсы</span>
       </button>
     </div>
-    <div class="course-list">
+
+    <div class="course-list" *ngIf="courses.length > 0">
+      <h3>Курсы:</h3>
       <app-course-card-small
         *ngFor="let course of courses"
         [course]="course"

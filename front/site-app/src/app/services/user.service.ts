@@ -11,14 +11,17 @@ export class UserService {
 
   constructor(private firestore: AngularFirestore) { }
 
-  public getUserSkillGroupsIds(userId: string): Observable<number[]> {
-    return this.firestore.doc(`${this.users}/${userId}`).valueChanges().pipe(
-      map<any, number[]>(user => user?.skillGroups ?? [])
-    );
+  public getUserSkillGroupsIds(userId: string): Promise<string[]> {
+    return this.firestore.collection(this.users).doc(userId).get()
+      .pipe(
+        map<any, string[]>(user => {
+          return user.data()?.skillGroups ?? [];
+        })
+      ).toPromise();
   }
 
-  public updateUserSkillGroups(userId: string, skillGroupIds: number[]): Promise<void> {
-    return this.firestore.doc(`${this.users}/${userId}`).update({ skillGroups: skillGroupIds });
+  public updateUserSkillGroups(userId: string, skillGroupIds: string[]): Promise<void> {
+    return this.firestore.collection(this.users).doc(userId).update({ skillGroups: skillGroupIds });
   }
 
   /** Инициализация данных пользователя, после регистрации  */

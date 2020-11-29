@@ -5,7 +5,6 @@ import { CourseService } from 'src/app/services/course.service';
 import { SkillService } from 'src/app/services/skill.service';
 import { UserService } from 'src/app/services/user.service';
 import { Course } from 'src/app/shared/models/course';
-import { Lesson } from 'src/app/shared/models/lesson';
 import { SkillGroup } from 'src/app/shared/models/skill-group';
 @Component({
   selector: 'app-default',
@@ -15,8 +14,7 @@ import { SkillGroup } from 'src/app/shared/models/skill-group';
 export class DefaultComponent implements OnInit {
   skillGroups$ = new Observable<SkillGroup[]>();
   courses: Course[] = [];
-  userSkillGroupIds: number[] = [];
-  lessons: Lesson[] = [];
+  userSkillGroupIds: string[] = [];
 
   get userName(): string | null | undefined {
     return this.authService.user?.displayName;
@@ -41,18 +39,19 @@ export class DefaultComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.authService.onAuthUserSuccess.subscribe((value: any) => {
+      if (value) {
+        this.loadSkills();
+      }
+    });
     this.loadSkills();
   }
 
-  loadSkills(): void {
+  async loadSkills(): Promise<void> {
     this.skillGroups$ = this.skillService.getAllSkillGroups();
-
     if (this.userId && this.isLogged) {
-      this.userService.getUserSkillGroupsIds(this.userId)
-        .subscribe(ids => {
-          this.userSkillGroupIds = ids;
-          console.log('userSkillGroupIds changes: ', ids);
-        });
+      this.userSkillGroupIds = await this.userService.getUserSkillGroupsIds(this.userId);
+      console.log('userSkillGroupIds changes: ', this.userSkillGroupIds);
     }
   }
 
@@ -62,7 +61,7 @@ export class DefaultComponent implements OnInit {
 
   loadCourses(): void {
     if (this.userSkillGroupIds.length > 0) {
-      this.courseService.getCourses(this.userSkillGroupIds).subscribe(courses => {
+      this.courseService.getCoursesBySkill(this.userSkillGroupIds).subscribe(courses => {
         this.courses = courses;
         console.log('courses: ', courses);
       });
@@ -70,10 +69,6 @@ export class DefaultComponent implements OnInit {
     else {
       this.courses = [];
     }
-  }
-
-  async loadLessons(courseId: number): Promise<void> {
-    this.lessons = await this.courseService.getLessons(courseId);
   }
 
   isSelectedSkillGroup(skillGroup: SkillGroup): boolean {

@@ -2,16 +2,19 @@ import { Author } from './author';
 import { Lesson } from './lesson';
 
 export class Course {
-    id: number;
+    id: string;
     title: string;
     description: string;
     author: Author;
     category: any[];
     /** Уроки */
     lessons?: Lesson[];
+    lessonIds?: string[];
+
+    skillIds?: string[];
 
     constructor(
-        id: number,
+        id: string,
         title: string,
         description: string,
         author: Author,

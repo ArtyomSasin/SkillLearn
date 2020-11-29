@@ -11,7 +11,7 @@ export enum LessonTypes {
 /** Базовый класс урока */
 export class Lesson {
     /** id */
-    id: number;
+    id: string;
     /** Название */
     title: string;
     /** Описание (необязательно) */
@@ -24,7 +24,7 @@ export class Lesson {
     content: any;
 
     constructor(
-        id: number,
+        id: string,
         title: string,
         order: number,
         type: LessonTypes,

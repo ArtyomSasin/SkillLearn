@@ -1,8 +1,32 @@
-<div>{{ course?.title }}</div>
-<div>Описание:</div>
-<div>{{ course?.description }}</div>
-<div>Количество уроков: {{ course?.lessons?.length }}</div>
-<a (click)="showLessons = !showLessons">Посмотреть уроки</a>
-<div>
-  <a [routerLink]="['/course', course?.id]">Перейти к курсу</a>
-</div>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{ course?.title }}</mat-card-title>
+    <mat-card-subtitle style="padding-top: 10px"
+      >Количество уроков: {{ course?.lessons?.length }}</mat-card-subtitle
+    >
+  </mat-card-header>
+  <mat-card-content>
+    <div>{{ course?.description }}</div>
+
+    <div *ngIf="isLoaded && course?.lessons">
+      <div style="padding-top: 10px">Уроки:</div>
+      <a
+        *ngFor="let lesson of course?.lessons; index as i"
+        [routerLink]="['/course', course.id, 'lesson', lesson.id]"
+        >{{ i + 1 }} - {{ lesson.title }}</a
+      >
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button *ngIf="!isLoaded" (click)="loadLessons()">
+      Показать уроки
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      [routerLink]="['/course', course?.id]"
+    >
+      Перейти к курсу
+    </button>
+  </mat-card-actions>
+</mat-card>
