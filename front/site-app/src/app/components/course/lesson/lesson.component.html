@@ -1,3 +1,14 @@
-<p>
-  lessons works!
-</p>
+<app-progress-bar [show]="!lesson"></app-progress-bar>
+
+<div class="container">
+  <div *ngIf="lesson">
+    <a mat-raised-button [routerLink]="['/course', courseId]">
+      Назад к курсу
+    </a>
+    <article>
+      <h2>{{ lesson?.order + 1 }} - {{ lesson?.title }}</h2>
+      <div>{{ lesson?.description }}</div>
+      <div class="content" [innerHTML]="lesson?.content"></div>
+    </article>
+  </div>
+</div>

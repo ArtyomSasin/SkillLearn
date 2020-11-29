@@ -1,10 +1,9 @@
-import { Post } from './post';
 
 export class Author {
     id: string;
     name: string;
-    posts?: Post[];
-    constructor(id: string, name: string, posts: Post[]) {
+    posts?: any[];
+    constructor(id: string, name: string, posts: any[]) {
         this.id = id;
         this.name = name;
         this.posts = posts;

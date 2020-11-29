@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  margin: 20px 50px;
+  min-width: 300px;
+  max-width: 50%;
+  align-items: center;
+  justify-content: center;
+}
+
+article {
+  padding-top: 50px;
+}
+
+.content {
+  padding-top: 50px;
+}
