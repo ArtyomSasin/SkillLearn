@@ -49,22 +49,20 @@ export class EditLessonComponent implements OnInit {
       this.lessonId = params.lessonId;
 
       // Получаем информациб о курсе и уроках
-      const course = await this.courseService.getCourse(this.courseId);
-      const lessons = (course?.lessonIds?.length ?? false) > 0
-        ? await this.courseService.getLessons(course?.lessonIds ?? [])
-        : null;
+      const course = await this.courseService.getCourse(this.courseId, true);
 
       console.log('course: ', course);
-      course.lessons = lessons ?? [];
 
       // Вычисляем максимальный порядковый номер статей
-      this.maxOrder = (course.lessons?.length > 0)
-        ? Math.max(...course.lessons.map(l => l.order))
-        : 0;
+      if (course.lessons && course.lessons?.length > 0) {
+        this.maxOrder = Math.max(...course.lessons.map(l => l.order));
+      } else {
+        this.maxOrder = 0;
+      }
 
       // Если передан lessonId, получаем информацию о нем
       if (this.lessonId) {
-        const lesson = await this.courseService.getLesson(this.lessonId);
+        const lesson = await this.courseService.getLesson(this.lessonId, true);
         this.form.patchValue(lesson);
       } else {
         this.form.patchValue({ id: null, title: '', description: '', type: LessonTypes.theory, order: 0, content: '' });
@@ -91,7 +89,6 @@ export class EditLessonComponent implements OnInit {
     this.showProgress = true;
     try {
       const lesson = this.form.getRawValue() as Lesson;
-      console.log('save clicked: ', lesson);
       if (lesson) {
         if (lesson?.id) {
           await this.courseService.updateLesson(lesson);

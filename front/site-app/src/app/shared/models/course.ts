@@ -8,7 +8,7 @@ export class Course {
     description: string;
     authorId: string;
     lessonIds?: string[];
-    skillIds?: string[];
+    skillGroupIds?: string[];
 
 
     // Поля LazyLoading
@@ -23,14 +23,14 @@ export class Course {
         description: string,
         authorId: string,
         lessonIds?: string[],
-        skillIds?: string[],
+        skillGroupIds?: string[],
     ) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.authorId = authorId;
         this.lessonIds = lessonIds;
-        this.skillIds = skillIds;
+        this.skillGroupIds = skillGroupIds;
     }
 }
 
@@ -44,6 +44,6 @@ export function toDbCourse(course: Course): any {
             course.description,
         authorId: course.authorId,
         lessonIds: course.lessonIds,
-        skillIds: course.skillIds
+        skillGroupIds: course.skillGroupIds
     };
 }

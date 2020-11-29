@@ -49,6 +49,13 @@ export function toDbLesson(lesson: Lesson): any {
             lesson.description,
         order: lesson.order,
         type: lesson.type,
-        content: lesson.content
+    };
+}
+
+/** Маппинг content в сущность БД */
+export function toDbContent(lesson: Lesson): any {
+    return {
+        id: lesson.id,
+        content: lesson.content,
     };
 }

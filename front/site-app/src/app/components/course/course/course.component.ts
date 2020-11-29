@@ -27,11 +27,9 @@ export class CourseComponent implements OnInit {
     this.route.params.subscribe(async params => {
       console.log('params', params);
       const courseId = params.courseId;
-      const course = await this.courseService.getCourse(courseId);
+      const course = await this.courseService.getCourse(courseId, true);
       console.log(course.lessonIds);
       if (course.lessonIds && course.lessonIds.length > 0) {
-        const lessons = await this.courseService.getLessons(course.lessonIds);
-        course.lessons = lessons;
 
         // Получаем информацию об авторе и можно ли редактировать статью
         const userId = this.authService.user?.uid;
