@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { AuthorRoutes } from './course.routing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HtmlDialogModule } from '../dialogs/html-dialog/html-dialog.module';
+import { PreviewLessonComponent } from './preview-lesson/preview-lesson.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,7 @@ import { HtmlDialogModule } from '../dialogs/html-dialog/html-dialog.module';
     HtmlDialogModule,
     AuthorRoutes,
   ],
-  exports: [EditLessonComponent],
-  declarations: [EditLessonComponent]
+  exports: [EditLessonComponent, PreviewLessonComponent],
+  declarations: [EditLessonComponent, PreviewLessonComponent]
 })
 export class AuthorModule { }

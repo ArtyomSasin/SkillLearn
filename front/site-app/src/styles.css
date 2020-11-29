@@ -23,3 +23,59 @@ h1 {
 .control > .mat-form-field {
   width: 250px !important;
 }
+
+.li-col-3 {
+  columns: 3;
+  -webkit-columns: 3;
+  -moz-columns: 3;
+}
+
+.code {
+  border-radius: 20px;
+  display: flex;
+  margin: 0 20px;
+}
+
+.dart.black {
+  background-color: rgb(30, 30, 30);
+}
+.dart span {
+  font-size: 16px;
+  font-weight: 500;
+}
+.dart .type {
+  color: rgb(113, 198, 177);
+}
+
+.dart .val {
+  color: rgb(212, 212, 212);
+}
+
+.dart .symb {
+  color: rgb(147, 147, 147);
+}
+
+.dart .string {
+  color: rgb(206, 145, 120);
+}
+
+.dart .int {
+  color: rgb(176, 200, 163);
+}
+
+.dart .comment {
+  color: rgb(87, 113, 70);
+}
+
+.dart .keyword {
+  color: rgb(102, 155, 209);
+}
+
+.dart .new {
+  color: rgb(188, 138, 189);
+}
+
+.dart .method {
+  color: rgb(220, 220, 169);
+}
+

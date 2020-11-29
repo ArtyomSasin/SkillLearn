@@ -24,6 +24,7 @@ import { CourseCardSmallModule } from './components/shared/course-card-small/cou
 import { ProgressBarModule } from './components/shared/progress-bar/progress-bar.module';
 import { PipesModule } from './pipes.module';
 import { HtmlDialogModule } from './components/dialogs/html-dialog/html-dialog.module';
+import { AuthorModule } from './components/author/author.module';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyD84KD37S_La_RWQiGwJiZQgpgFtxPm56s',
@@ -59,6 +60,7 @@ firebase.initializeApp(firebaseConfig);
     MaterialModule,
     CourseCardSmallModule,
     ProgressBarModule,
+    AuthorModule,
     PipesModule,
     HtmlDialogModule,
     // Firebase modules
