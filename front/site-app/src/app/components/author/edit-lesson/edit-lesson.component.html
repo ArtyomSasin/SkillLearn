@@ -1,0 +1,58 @@
+<app-progress-bar [show]="showProgress"></app-progress-bar>
+<div *ngIf="!showProgress" class="component">
+  <div class="container">
+    <div>
+      <div class="actions">
+        <a mat-raised-button [routerLink]="['/course', courseId]">
+          Назад к курсу
+        </a>
+        <span class="spacer"></span>
+        <button mat-stroked-button color="primary" (click)="showPreview()">
+          Предпросмотр
+        </button>
+        <button mat-raised-button color="primary" (click)="save()">
+          Опубликовать
+        </button>
+      </div>
+
+      <form [formGroup]="form" class="form">
+        <input type="hidden" formControlName="id" />
+
+        <mat-form-field appearance="outline" class="row">
+          <input matInput formControlName="title" />
+          <mat-label>Название</mat-label>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="row">
+          <textarea matInput formControlName="description" rows="3"></textarea>
+          <mat-label>Описание</mat-label>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="row">
+          <mat-select matInput formControlName="order">
+            <mat-option *ngFor="let order of orders" [value]="order">{{
+              order
+            }}</mat-option>
+          </mat-select>
+          <mat-label>Порядковый номер урока</mat-label>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="row">
+          <mat-select matInput formControlName="type">
+            <mat-option [value]="lessonTypes.theory">Теория</mat-option>
+            <mat-option [value]="lessonTypes.practice">Практика</mat-option>
+            <mat-option [value]="lessonTypes.homeWork"
+              >Домашняя работа</mat-option
+            >
+          </mat-select>
+          <mat-label>Тип урока</mat-label>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="row">
+          <textarea matInput formControlName="content" rows="30"></textarea>
+          <mat-label>Контент</mat-label>
+        </mat-form-field>
+      </form>
+    </div>
+  </div>
+</div>

@@ -10,13 +10,27 @@
 
     <div *ngIf="isLoaded && course?.lessons">
       <div style="padding-top: 10px">Уроки:</div>
-      <a
-        class="lesson-link"
-        mat-button
-        *ngFor="let lesson of course?.lessons | sortLessons"
-        [routerLink]="['/course', course?.id, 'lesson', lesson.id]"
-        >{{ lesson.order }} - {{ lesson.title }}</a
-      >
+      <div *ngFor="let lesson of course?.lessons | sortLessons">
+        <a
+          mat-button
+          class="lesson-link"
+          [routerLink]="['/course', course?.id, 'lesson', lesson.id]"
+          >{{ lesson.order }} - {{ lesson.title }}</a
+        >
+        <a
+          *ngIf="canEdit"
+          mat-button
+          class="lesson-link"
+          [routerLink]="[
+            '/author',
+            'course',
+            course?.id,
+            'edit-lesson',
+            lesson.id
+          ]"
+          >Изменить</a
+        >
+      </div>
     </div>
   </mat-card-content>
   <mat-card-actions>

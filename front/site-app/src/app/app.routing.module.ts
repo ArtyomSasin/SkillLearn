@@ -7,6 +7,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { UserComponent } from './components/user/user.component';
 import { UnAuthorizeGuard } from './unauthorize.guard';
 import { CourseModule } from './components/course/course.module';
+import { AuthorModule } from './components/author/author.module';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [UnAuthorizeGuard] },
@@ -20,6 +21,7 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes),
     CourseModule,
+    AuthorModule,
   ],
   exports: [RouterModule]
 })

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { SkillGroup } from '../shared/models/skill-group';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })

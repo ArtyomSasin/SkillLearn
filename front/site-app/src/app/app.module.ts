@@ -23,6 +23,7 @@ import { UnAuthorizeGuard } from './unauthorize.guard';
 import { CourseCardSmallModule } from './components/shared/course-card-small/course-card-small.module';
 import { ProgressBarModule } from './components/shared/progress-bar/progress-bar.module';
 import { PipesModule } from './pipes.module';
+import { HtmlDialogModule } from './components/dialogs/html-dialog/html-dialog.module';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyD84KD37S_La_RWQiGwJiZQgpgFtxPm56s',
@@ -59,6 +60,7 @@ firebase.initializeApp(firebaseConfig);
     CourseCardSmallModule,
     ProgressBarModule,
     PipesModule,
+    HtmlDialogModule,
     // Firebase modules
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features

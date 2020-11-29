@@ -6,14 +6,27 @@
     <h4>Описание: {{ course.description }}</h4>
     <div>
       <h3>Уроки:</h3>
-      <a
-        mat-button
-        class="lesson-link"
-        *ngFor="let lesson of course.lessons | sortLessons"
-        [routerLink]="['/course', course.id, 'lesson', lesson.id]"
-      >
-        {{ lesson.order }} - {{ lesson.title }}</a
-      >
+      <div *ngFor="let lesson of course?.lessons | sortLessons">
+        <a
+          mat-button
+          class="lesson-link"
+          [routerLink]="['/course', course?.id, 'lesson', lesson.id]"
+          >{{ lesson.order }} - {{ lesson.title }}</a
+        >
+        <a
+          *ngIf="canEdit"
+          mat-button
+          class="lesson-link"
+          [routerLink]="[
+            '/author',
+            'course',
+            course?.id,
+            'edit-lesson',
+            lesson.id
+          ]"
+          >Изменить</a
+        >
+      </div>
     </div>
   </div>
 </div>

@@ -4,8 +4,8 @@ export enum LessonTypes {
     theory = 1,
     /** Практика */
     practice = 2,
-    /** Видео */
-    video = 3,
+    /** Домашняя работа */
+    homeWork = 3,
 }
 
 /** Базовый класс урока */
@@ -38,4 +38,17 @@ export class Lesson {
         this.type = type;
         this.content = content;
     }
+}
+
+/** Маппинг lesson в сущность БД */
+export function toDbLesson(lesson: Lesson): any {
+    return {
+        id: lesson.id,
+        title: lesson.title,
+        description:
+            lesson.description,
+        order: lesson.order,
+        type: lesson.type,
+        content: lesson.content
+    };
 }

@@ -1,0 +1,11 @@
+<div class="title">
+  <h2 mat-dialog-title>Предпросмотр</h2>
+  <span class="spacer"></span>
+  <mat-icon style="cursor: pointer" matTooltip="Закрыть" mat-dialog-close
+    >close</mat-icon
+  >
+</div>
+<div mat-dialog-content [innerHTML]="html"></div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close (click)="close()">Закрыть</button>
+</div>

@@ -14,10 +14,6 @@ h2 {
   font-size: 32px;
 }
 
-.spacer {
-  flex: 1 1 auto;
-}
-
 .container {
   padding: 0 200px;
 }
