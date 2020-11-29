@@ -2,16 +2,17 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PasswordComponent } from './password.component';
 import { MaterialModule } from 'src/app/shared/material.module';
-import { CustomErrorPipe } from 'src/app/shared/pipes/custom-error.pipe';
+import { PipesModule } from 'src/app/pipes.module';
 
 @NgModule({
   imports: [
     CommonModule,
     MaterialModule,
+    PipesModule,
   ],
   exports: [
     PasswordComponent,
   ],
-  declarations: [PasswordComponent, CustomErrorPipe]
+  declarations: [PasswordComponent]
 })
 export class PasswordModule { }

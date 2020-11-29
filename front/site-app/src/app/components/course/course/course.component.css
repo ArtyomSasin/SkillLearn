@@ -5,3 +5,8 @@
 .course {
   margin-top: 30px;
 }
+
+.lesson-link {
+  display: block;
+  text-align: start;
+}

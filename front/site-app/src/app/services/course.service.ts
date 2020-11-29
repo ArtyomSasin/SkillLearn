@@ -18,7 +18,7 @@ export class CourseService {
     console.log('getCoursesBySkill() skillIds: ', skillIds);
 
     return this.firestore
-      .collection(this.courses, ref => ref.where('skills', 'array-contains-any', skillIds))
+      .collection(this.courses, ref => ref.where('skillIds', 'array-contains-any', skillIds))
       .valueChanges() as Observable<Course[]>;
   }
 
@@ -36,7 +36,10 @@ export class CourseService {
     console.log('getLessons() lessonIds: ', lessonIds);
     return this.firestore.collection(this.lessons, ref => ref.where('id', 'in', lessonIds))
       .get()
-      .pipe(map(value => value.docs.map(d => d.data() as Lesson)))
+      .pipe(map(value => {
+        console.log(value);
+        return value.docs.map(d => d.data() as Lesson);
+      }))
       .toPromise();
   }
 

@@ -16,13 +16,13 @@ import { UserComponent } from './components/user/user.component';
 import firebase from 'firebase/app';
 import { AuthService } from './services/auth.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CustomErrorPipe } from './shared/pipes/custom-error.pipe';
 import { PasswordComponent } from './components/shared/password/password.component';
 import { EmailComponent } from './components/shared/email/email.component';
 import { RouterModule } from '@angular/router';
 import { UnAuthorizeGuard } from './unauthorize.guard';
 import { CourseCardSmallModule } from './components/shared/course-card-small/course-card-small.module';
 import { ProgressBarModule } from './components/shared/progress-bar/progress-bar.module';
+import { PipesModule } from './pipes.module';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyD84KD37S_La_RWQiGwJiZQgpgFtxPm56s',
@@ -46,7 +46,6 @@ firebase.initializeApp(firebaseConfig);
     UserComponent,
     PasswordComponent,
     EmailComponent,
-    CustomErrorPipe,
   ],
   imports: [
     BrowserModule,
@@ -59,6 +58,7 @@ firebase.initializeApp(firebaseConfig);
     MaterialModule,
     CourseCardSmallModule,
     ProgressBarModule,
+    PipesModule,
     // Firebase modules
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features

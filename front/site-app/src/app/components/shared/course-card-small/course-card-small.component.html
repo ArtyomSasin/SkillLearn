@@ -11,10 +11,11 @@
     <div *ngIf="isLoaded && course?.lessons">
       <div style="padding-top: 10px">Уроки:</div>
       <a
+        class="lesson-link"
         mat-button
-        *ngFor="let lesson of course?.lessons"
+        *ngFor="let lesson of course?.lessons | sortLessons"
         [routerLink]="['/course', course?.id, 'lesson', lesson.id]"
-        >{{ lesson.order + 1 }} - {{ lesson.title }}</a
+        >{{ lesson.order }} - {{ lesson.title }}</a
       >
     </div>
   </mat-card-content>

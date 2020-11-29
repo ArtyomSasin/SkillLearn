@@ -15,13 +15,13 @@ export class UserService {
     return this.firestore.collection(this.users).doc(userId).get()
       .pipe(
         map<any, string[]>(user => {
-          return user.data()?.skillGroups ?? [];
+          return user.data()?.skillGroupIds ?? [];
         })
       ).toPromise();
   }
 
   public updateUserSkillGroups(userId: string, skillGroupIds: string[]): Promise<void> {
-    return this.firestore.collection(this.users).doc(userId).update({ skillGroups: skillGroupIds });
+    return this.firestore.collection(this.users).doc(userId).update({ skillGroupIds });
   }
 
   /** Инициализация данных пользователя, после регистрации  */
@@ -29,7 +29,7 @@ export class UserService {
     const ref = this.firestore.collection(this.users).doc(userId);
     return ref.get().toPromise().then(snap => {
       if (!snap.exists) {
-        ref.set({ userId, skillGroups: [] });
+        ref.set({ userId, skillGroupIds: [] });
       }
     });
   }

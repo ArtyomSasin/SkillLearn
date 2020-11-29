@@ -8,10 +8,11 @@
       <h3>Уроки:</h3>
       <a
         mat-button
-        *ngFor="let lesson of course.lessons"
+        class="lesson-link"
+        *ngFor="let lesson of course.lessons | sortLessons"
         [routerLink]="['/course', course.id, 'lesson', lesson.id]"
       >
-        {{ lesson.order + 1 }} - {{ lesson.title }}</a
+        {{ lesson.order }} - {{ lesson.title }}</a
       >
     </div>
   </div>
