@@ -6,7 +6,7 @@
       Назад к курсу
     </a>
     <article>
-      <h2>{{ lesson?.order + 1 }} - {{ lesson?.title }}</h2>
+      <h2>{{ lesson.order + 1 }} - {{ lesson?.title }}</h2>
       <div>{{ lesson?.description }}</div>
       <div class="content" [innerHTML]="lesson?.content"></div>
     </article>
