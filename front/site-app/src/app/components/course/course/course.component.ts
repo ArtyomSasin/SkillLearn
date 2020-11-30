@@ -34,7 +34,7 @@ export class CourseComponent implements OnInit {
         // Получаем информацию об авторе и можно ли редактировать статью
         const userId = this.authService.user?.uid;
         if (userId) {
-          this.canEdit = await this.authorService.isAuthor(userId);
+          this.canEdit = await this.authorService.isAuthor(userId) && userId === course.authorId;
         }
       }
       this.course = course;

@@ -19,6 +19,7 @@ export class AuthorService {
       .toPromise();
   }
 
+  /** Является ли пользователь автором */
   public async isAuthor(userId: string): Promise<boolean> {
     console.log('isAuthor() usesrId: ', userId);
     const author = await this.getAuthor(userId);

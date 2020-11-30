@@ -23,8 +23,8 @@ export class CourseCardSmallComponent implements OnInit {
     this.authService.onAuthUserSuccess.subscribe(async (value: boolean) => {
       if (value) {
         const userId = this.authService.user?.uid;
-        if (userId) {
-          this.canEdit = await this.authorService.isAuthor(userId);
+        if (userId && this.course) {
+          this.canEdit = await this.authorService.isAuthor(userId) && userId === this.course.authorId;
         }
       }
     });
@@ -38,7 +38,7 @@ export class CourseCardSmallComponent implements OnInit {
       // Получаем информацию об авторе и можно ли редактировать статью
       const userId = this.authService.user?.uid;
       if (userId) {
-        this.canEdit = await this.authorService.isAuthor(userId);
+        this.canEdit = await this.authorService.isAuthor(userId) && userId === this.course.authorId;
       }
       this.isLoaded = true;
     }
