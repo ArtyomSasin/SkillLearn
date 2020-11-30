@@ -14,22 +14,22 @@ h2 {
   font-size: 32px;
 }
 
-.container {
-  padding: 0 200px;
-}
-
 .skill-groups {
   padding-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .skill-groups-label {
   font-size: 18px;
-  padding: 10px 0;
+  padding-right: 20px;
 }
 
 .skill-find {
   margin-top: 20px;
-  display: inline-block;
+  display: flex;
+  justify-content: center;
 }
 .button-skill-find {
   border: 2px solid;
@@ -38,12 +38,42 @@ h2 {
 .button-skill-find span {
   margin: 0 15px;
 }
-
-.course-list {
+.courses {
   padding-top: 30px;
 }
 
+.course-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+/* Для маленьких экранов */
+@media (max-width: 978px) {
+  .course-card {
+    width: 100%;
+    margin-top: 30px;
+    margin: 10px;
+  }
+}
+
+/* Для Больших экранов */
+@media (min-width: 979px) {
+  .course-card {
+    width: 450px;
+    margin: 10px;
+  }
+}
+
 .footer {
+  width: 100%;
   position: absolute;
+  background-color: red;
   bottom: 0;
+}
+
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
 }

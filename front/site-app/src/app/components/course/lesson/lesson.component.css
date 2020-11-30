@@ -9,3 +9,10 @@ article {
 .content {
   padding-top: 50px;
 }
+
+.actions {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}

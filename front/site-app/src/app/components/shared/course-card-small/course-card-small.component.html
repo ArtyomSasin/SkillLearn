@@ -2,10 +2,10 @@
   <mat-card-header>
     <mat-card-title>{{ course?.title }}</mat-card-title>
     <mat-card-subtitle style="padding-top: 10px"
-      >Количество уроков: {{ course?.lessons?.length }}</mat-card-subtitle
+      >Количество уроков: {{ course?.lessonIds?.length }}</mat-card-subtitle
     >
   </mat-card-header>
-  <mat-card-content>
+  <mat-card-content class="card-content">
     <div>{{ course?.description }}</div>
 
     <div *ngIf="isLoaded && course?.lessons">
@@ -18,6 +18,7 @@
           >{{ lesson.order }} - {{ lesson.title }}</a
         >
         <a
+          matTooltip="Изменить"
           *ngIf="canEdit"
           mat-button
           class="lesson-link"
@@ -28,12 +29,12 @@
             'edit-lesson',
             lesson.id
           ]"
-          >Изменить</a
+          ><mat-icon>edit</mat-icon></a
         >
       </div>
     </div>
   </mat-card-content>
-  <mat-card-actions>
+  <mat-card-actions class="card-actions">
     <button mat-raised-button *ngIf="!isLoaded" (click)="loadLessons()">
       Показать уроки
     </button>

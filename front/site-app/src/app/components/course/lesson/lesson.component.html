@@ -9,9 +9,11 @@
       <h2>{{ lesson.order }} - {{ lesson?.title }}</h2>
       <div>{{ lesson?.description }}</div>
       <div class="content" [innerHTML]="lesson?.content"></div>
-      <div *ngIf="nextLessonId">
+      <div class="actions">
         <a
-          mat-button
+          *ngIf="nextLessonId"
+          mat-raised-button
+          color="primary"
           class="lesson-link"
           [routerLink]="['/course', course?.id, 'lesson', nextLessonId]"
           >Следующий урок</a

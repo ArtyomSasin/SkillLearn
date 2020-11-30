@@ -51,6 +51,9 @@ export class DefaultComponent implements OnInit {
     this.skillGroups$ = this.skillService.getAllSkillGroups();
     if (this.userId && this.isLogged) {
       this.userSkillGroupIds = await this.userService.getUserSkillGroupsIds(this.userId);
+      if (this.userSkillGroupIds?.length > 0) {
+        await this.loadCourses();
+      }
       console.log('userSkillGroupIds changes: ', this.userSkillGroupIds);
     }
   }

@@ -14,6 +14,7 @@
           >{{ lesson.order }} - {{ lesson.title }}</a
         >
         <a
+          matTooltip="Изменить"
           *ngIf="canEdit"
           mat-button
           class="lesson-link"
@@ -24,8 +25,8 @@
             'edit-lesson',
             lesson.id
           ]"
-          >Изменить</a
-        >
+          ><mat-icon>edit</mat-icon>
+        </a>
       </div>
     </div>
   </div>

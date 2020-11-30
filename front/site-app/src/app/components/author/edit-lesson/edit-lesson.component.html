@@ -7,6 +7,12 @@
           Назад к курсу
         </a>
         <span class="spacer"></span>
+        <a
+          mat-raised-button
+          [routerLink]="['/course', courseId, 'preview-lesson', lessonId]"
+        >
+          Новый редактор
+        </a>
         <button mat-stroked-button color="primary" (click)="showPreview()">
           Предпросмотр
         </button>

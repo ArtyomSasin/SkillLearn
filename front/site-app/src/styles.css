@@ -1,6 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
 @import url("https://fonts.googleapis.com/css2?family=Raleway&display=swap");
 
+/*
+@Large desktops and laptops 
+media (min-width: 1200px) { }
+
+Portrait tablets and medium desktops
+@media (min-width: 992px) and (max-width: 1199px) { }
+
+Portrait tablets and small desktops
+@media (min-width: 768px) and (max-width: 991px) { }
+
+Landscape phones and portrait tablets 
+@media (max-width: 767px) { }
+
+Landscape phones and smaller 
+@media (max-width: 480px) { }
+*/
+
 html,
 body {
   height: 100%;
@@ -14,6 +31,12 @@ h1 {
   font-family: Raleway;
   text-transform: lowercase;
   font-size: 58px !important;
+}
+
+.container {
+  padding: 20px;
+  max-width: 1024px;
+  margin: 0 auto;
 }
 
 .spacer {
@@ -78,4 +101,3 @@ h1 {
 .dart .method {
   color: rgb(220, 220, 169);
 }
-

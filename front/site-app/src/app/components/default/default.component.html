@@ -29,9 +29,10 @@
     </mat-menu>
   </mat-toolbar>
 </header>
-<h1>SkillLearn</h1>
 
 <div class="container">
+  <h1>SkillLearn</h1>
+
   <h2>Прокачай свои навыки!</h2>
 
   <div class="skill-groups">
@@ -49,28 +50,27 @@
         >{{ group.title }}</mat-chip
       >
     </mat-chip-list>
-    <div class="skill-find" [matTooltip]="canSearch ? '' : 'Выберите раздел'">
-      <button
-        class="button-skill-find"
-        mat-stroked-button
-        [disabled]="!canSearch"
-        color="primary"
-        (click)="loadCourses()"
-      >
-        <mat-icon>search</mat-icon>
-        <span>Найти курсы</span>
-      </button>
-    </div>
-
-    <div class="course-list" *ngIf="courses.length > 0">
-      <h3>Курсы:</h3>
+  </div>
+  <div class="skill-find" [matTooltip]="canSearch ? '' : 'Выберите раздел'">
+    <button
+      class="button-skill-find"
+      mat-stroked-button
+      [disabled]="!canSearch"
+      color="primary"
+      (click)="loadCourses()"
+    >
+      <mat-icon>search</mat-icon>
+      <span>Найти курсы</span>
+    </button>
+  </div>
+  <div class="courses" *ngIf="courses.length > 0">
+    <h2>Курсы:</h2>
+    <div class="course-list">
       <app-course-card-small
+        class="course-card"
         *ngFor="let course of courses"
         [course]="course"
       ></app-course-card-small>
     </div>
   </div>
-  <footer class="footer"></footer>
 </div>
-
-<app-preview-lesson></app-preview-lesson>
