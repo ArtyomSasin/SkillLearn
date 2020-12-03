@@ -11,3 +11,34 @@
   display: flex;
   flex-wrap: wrap;
 }
+
+.menu > :nth-child(n) {
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+.border-none {
+  border: 0;
+}
+
+.shadow {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.32);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.color-container {
+  max-width: 80vw;
+  position: static;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: white;
+  z-index: 1000;
+}

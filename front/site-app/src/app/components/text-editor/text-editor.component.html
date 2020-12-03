@@ -103,20 +103,31 @@
   </mat-button-toggle-group>
 
   <mat-button-toggle-group name="color" onmousedown="event.preventDefault();">
-    <mat-button-toggle
-      (click)="selectColor()"
+    <button
+      mat-stroked-button
+      class="border-none"
+      (click)="showColor = true"
       matTooltip="Цвет текста"
       value="text"
     >
+      <mat-icon [ngStyle]="{ color: color, 'padding-right': '10px' }"
+        >circle</mat-icon
+      >
       <mat-icon>format_color_text</mat-icon>
-    </mat-button-toggle>
-    <mat-button-toggle
-      (click)="selectBackgroundColor()"
+    </button>
+    <mat-divider [vertical]="true"></mat-divider>
+    <button
+      mat-stroked-button
+      class="border-none"
+      (click)="showBackgroundColor = true"
       matTooltip="Цвет заливки"
-      value="background"
+      value="text"
     >
+      <mat-icon [ngStyle]="{ color: backgroundColor, 'padding-right': '10px' }"
+        >circle</mat-icon
+      >
       <mat-icon>format_color_fill</mat-icon>
-    </mat-button-toggle>
+    </button>
   </mat-button-toggle-group>
 
   <mat-button-toggle-group
@@ -240,6 +251,28 @@
   >
   
  -->
+</div>
+
+<div *ngIf="showColor || showBackgroundColor" class="shadow">
+  <div class="color-container">
+    <app-color-picker
+      *ngIf="showColor"
+      [color]="color"
+      [colors]="colors"
+      (selected)="changeColor($event)"
+      (canceled)="showColor = false"
+    >
+    </app-color-picker>
+
+    <app-color-picker
+      *ngIf="showBackgroundColor"
+      [colors]="colors"
+      [color]="backgroundColor"
+      (selected)="changeBackgroundColor($event)"
+      (canceled)="showBackgroundColor = false"
+    >
+    </app-color-picker>
+  </div>
 </div>
 
 <div

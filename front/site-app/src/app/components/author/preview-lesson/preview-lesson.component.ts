@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 import { CourseService } from 'src/app/services/course.service';
 import { Lesson, LessonTypes } from 'src/app/shared/models/lesson';
 
@@ -21,8 +22,10 @@ export class PreviewLessonComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private courseService: CourseService,
-    public dialog: MatDialog,
-    public snackBar: MatSnackBar,
+    private authService: AuthService,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -35,7 +38,10 @@ export class PreviewLessonComponent implements OnInit {
 
       // Получаем информациб о курсе и уроках
       const course = await this.courseService.getCourse(this.courseId, true);
-
+      if (course.authorId !== this.authService.user?.uid) {
+        this.router.navigate(['/']);
+        return;
+      }
       console.log('course: ', course);
 
       // Вычисляем максимальный порядковый номер статей

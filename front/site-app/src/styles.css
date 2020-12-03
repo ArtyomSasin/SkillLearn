@@ -43,6 +43,18 @@ h1 {
   flex: 1 1 auto;
 }
 
+.color {
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgb(218, 220, 224);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
 .control > .mat-form-field {
   width: 250px !important;
 }

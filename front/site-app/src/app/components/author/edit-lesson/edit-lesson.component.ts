@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 import { CourseService } from 'src/app/services/course.service';
 import { Lesson, LessonTypes } from 'src/app/shared/models/lesson';
 import { HtmlDialogComponent } from '../../dialogs/html-dialog/html-dialog.component';
@@ -36,8 +37,10 @@ export class EditLessonComponent implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private courseService: CourseService,
-    public dialog: MatDialog,
-    public snackBar: MatSnackBar,
+    private authService: AuthService,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -48,9 +51,12 @@ export class EditLessonComponent implements OnInit {
       this.courseId = params.courseId;
       this.lessonId = params.lessonId;
 
-      // Получаем информациб о курсе и уроках
+      // Получаем информацию о курсе и уроках
       const course = await this.courseService.getCourse(this.courseId, true);
-
+      if (course.authorId !== this.authService.user?.uid) {
+        this.router.navigate(['/']);
+        return;
+      }
       console.log('course: ', course);
 
       // Вычисляем максимальный порядковый номер статей

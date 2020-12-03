@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TextEditorComponent } from './text-editor.component';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ColorPickerComponent } from './color-picker/color-picker.component';
 
 @NgModule({
   imports: [
@@ -11,7 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     MaterialModule,
   ],
-  exports: [TextEditorComponent],
-  declarations: [TextEditorComponent]
+  exports: [TextEditorComponent, ColorPickerComponent],
+  declarations: [TextEditorComponent, ColorPickerComponent]
 })
 export class TextEditorModule { }
