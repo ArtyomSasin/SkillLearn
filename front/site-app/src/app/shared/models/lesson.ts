@@ -21,7 +21,7 @@ export class Lesson {
     /** Тип урока */
     type: LessonTypes;
     /** Контент */
-    content: any;
+    content: string;
 
     constructor(
         id: string,

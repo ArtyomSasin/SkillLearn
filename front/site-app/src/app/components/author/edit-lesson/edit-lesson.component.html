@@ -9,7 +9,13 @@
         <span class="spacer"></span>
         <a
           mat-raised-button
-          [routerLink]="['/course', courseId, 'preview-lesson', lessonId]"
+          [routerLink]="[
+            '/author',
+            'course',
+            courseId,
+            'preview-lesson',
+            lessonId
+          ]"
         >
           Новый редактор
         </a>

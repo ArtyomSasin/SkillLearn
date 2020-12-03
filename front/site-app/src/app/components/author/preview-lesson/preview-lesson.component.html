@@ -1,1 +1,2 @@
-<div class="editor"></div>
+<app-progress-bar [show]="!lesson"></app-progress-bar>
+<app-text-editor *ngIf="lesson" [html]="lesson.content"></app-text-editor>

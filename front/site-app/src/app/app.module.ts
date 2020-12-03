@@ -25,6 +25,7 @@ import { ProgressBarModule } from './components/shared/progress-bar/progress-bar
 import { PipesModule } from './pipes.module';
 import { HtmlDialogModule } from './components/dialogs/html-dialog/html-dialog.module';
 import { AuthorModule } from './components/author/author.module';
+import { TextEditorModule } from './components/text-editor/text-editor.module';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyD84KD37S_La_RWQiGwJiZQgpgFtxPm56s',
@@ -63,6 +64,7 @@ firebase.initializeApp(firebaseConfig);
     AuthorModule,
     PipesModule,
     HtmlDialogModule,
+    TextEditorModule,
     // Firebase modules
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features

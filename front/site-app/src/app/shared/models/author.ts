@@ -9,4 +9,3 @@ export class Author {
         this.posts = posts;
     }
 }
-

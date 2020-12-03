@@ -8,6 +8,7 @@ import { AuthorRoutes } from './course.routing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HtmlDialogModule } from '../dialogs/html-dialog/html-dialog.module';
 import { PreviewLessonComponent } from './preview-lesson/preview-lesson.component';
+import { TextEditorModule } from '../text-editor/text-editor.module';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { PreviewLessonComponent } from './preview-lesson/preview-lesson.componen
     MaterialModule,
     ProgressBarModule,
     HtmlDialogModule,
+    TextEditorModule,
     AuthorRoutes,
   ],
   exports: [EditLessonComponent, PreviewLessonComponent],

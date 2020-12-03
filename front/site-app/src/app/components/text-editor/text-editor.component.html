@@ -1,0 +1,255 @@
+<div class="menu">
+  <mat-button-toggle-group name="stepper" onmousedown="event.preventDefault();">
+    <mat-button-toggle matTooltip="Шаг назад (отменить)" (click)="undo()">
+      <mat-icon>undo</mat-icon>
+    </mat-button-toggle>
+
+    <mat-button-toggle matTooltip="Шаг вперед (повторить)" (click)="redo()">
+      <mat-icon>redo</mat-icon>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <mat-form-field
+    appearance="outline"
+    matTooltip="Стиль текста"
+    class="without-space-bottom"
+    onmousedown="event.preventDefault();"
+  >
+    <mat-select
+      [formControl]="formatBlockControl"
+      [compareWith]="compareById"
+      onmousedown="event.preventDefault();"
+    >
+      <mat-option
+        *ngFor="let option of formatBlocks"
+        onmousedown="event.preventDefault();"
+        [value]="option"
+        >{{ option.name }}</mat-option
+      >
+    </mat-select>
+    <mat-label>Стиль</mat-label>
+  </mat-form-field>
+
+  <mat-form-field
+    appearance="outline"
+    class="without-space-bottom"
+    onmousedown="event.preventDefault();"
+  >
+    <mat-select
+      [formControl]="fontFamilyControl"
+      [compareWith]="compareBy"
+      onmousedown="event.preventDefault();"
+    >
+      <mat-option
+        *ngFor="let option of fontFamilies"
+        onmousedown="event.preventDefault();"
+        [value]="option"
+        >{{ option }}</mat-option
+      >
+    </mat-select>
+    <mat-label>Шрифт</mat-label>
+  </mat-form-field>
+
+  <mat-form-field
+    appearance="outline"
+    class="without-space-bottom"
+    onmousedown="event.preventDefault();"
+  >
+    <mat-select
+      [formControl]="fontSizeControl"
+      [compareWith]="compareById"
+      onmousedown="event.preventDefault();"
+    >
+      <mat-option
+        *ngFor="let option of fontSizes"
+        onmousedown="event.preventDefault();"
+        [value]="option"
+        [ngStyle]="{ fontSize: option.size }"
+        >{{ option.name }}</mat-option
+      >
+    </mat-select>
+    <mat-label>Размер</mat-label>
+  </mat-form-field>
+
+  <mat-button-toggle-group
+    [multiple]="true"
+    name="fontStyle"
+    onmousedown="event.preventDefault();"
+  >
+    <mat-button-toggle
+      (click)="formatDoc('bold')"
+      [checked]="isFormat('bold')"
+      matTooltip="Жирный"
+      value="bold"
+    >
+      <mat-icon>format_bold</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle
+      (click)="formatDoc('italic')"
+      [checked]="isFormat('italic')"
+      matTooltip="Курсив"
+      value="italic"
+    >
+      <mat-icon>format_italic</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle
+      (click)="formatDoc('underline')"
+      [checked]="isFormat('underline')"
+      matTooltip="Подчеркивание"
+      value="underline"
+    >
+      <mat-icon>format_underline</mat-icon>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <mat-button-toggle-group name="color" onmousedown="event.preventDefault();">
+    <mat-button-toggle
+      (click)="selectColor()"
+      matTooltip="Цвет текста"
+      value="text"
+    >
+      <mat-icon>format_color_text</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle
+      (click)="selectBackgroundColor()"
+      matTooltip="Цвет заливки"
+      value="background"
+    >
+      <mat-icon>format_color_fill</mat-icon>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <mat-button-toggle-group
+    name="fontJustify"
+    onmousedown="event.preventDefault();"
+  >
+    <mat-button-toggle
+      (click)="formatDoc('justifyleft')"
+      [checked]="isFormat('justifyleft')"
+      matTooltip="Выравнивание слева"
+      value="lefy"
+    >
+      <mat-icon>format_align_left</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle
+      (click)="formatDoc('justifycenter')"
+      [checked]="isFormat('justifycenter')"
+      matTooltip="Выравнивание по центру"
+      value="center"
+    >
+      <mat-icon>format_align_center</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle
+      (click)="formatDoc('justifyright')"
+      [checked]="isFormat('justifyright')"
+      matTooltip="Выравнивание справа"
+      value="right"
+    >
+      <mat-icon>format_align_right</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle
+      (click)="formatDoc('justifyfull')"
+      [checked]="isFormat('justifyfull')"
+      matTooltip="Выравнивание по ширине"
+      value="stretch"
+    >
+      <mat-icon>format_align_justify</mat-icon>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <!--<button
+    mat-stroked-button
+    matTooltip="Добавить"
+    (click)="add()"
+    onmousedown="event.preventDefault();"
+  >
+    <mat-icon>add_circle_outline</mat-icon>
+  </button>-->
+
+  <mat-button-toggle-group name="addItem" onmousedown="event.preventDefault();">
+    <mat-button-toggle
+      (click)="selectLink()"
+      matTooltip="Вставить ссылку"
+      value="link"
+    >
+      <mat-icon>insert_link</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle
+      (click)="selectPhoto()"
+      matTooltip="Вставить изображение"
+      value="photo"
+    >
+      <mat-icon>insert_photo</mat-icon>
+    </mat-button-toggle>
+
+    <mat-button-toggle
+      (click)="selectCode()"
+      matTooltip="Вставить код"
+      value="code"
+    >
+      <mat-icon>code</mat-icon>
+    </mat-button-toggle>
+
+    <mat-button-toggle
+      (click)="selectQuote()"
+      matTooltip="Вставить цитату"
+      value="quote"
+    >
+      <mat-icon>format_quote</mat-icon>
+    </mat-button-toggle>
+
+    <mat-button-toggle
+      (click)="selectPhoto()"
+      matTooltip="Вставить изображение"
+      value="photo"
+    >
+      <mat-icon>insert_photo</mat-icon>
+    </mat-button-toggle>
+
+    <mat-button-toggle
+      (click)="selectTable()"
+      matTooltip="Вставить таблицу"
+      value="table"
+    >
+      <mat-icon>table_chart</mat-icon>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <mat-button-toggle-group name="clear" onmousedown="event.preventDefault();">
+    <mat-button-toggle
+      (click)="clearText()"
+      matTooltip="Очистить"
+      value="text_clear"
+    >
+      <mat-icon>clear</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle
+      (click)="formatClear()"
+      matTooltip="Очистить форматирование"
+      value="format_clear"
+    >
+      <mat-icon>format_clear</mat-icon>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <!--
+  <mat-icon
+    matTooltip="Выбрать размер шрифта"
+    onmousedown="event.preventDefault();"
+    (click)="selectFontSize()"
+    >format_size</mat-icon
+  >
+  
+ -->
+</div>
+
+<div
+  id="editor"
+  class="editor"
+  (mouseup)="updateMenu()"
+  (keydown)="updateMenu()"
+  contenteditable="true"
+  spellcheck="true"
+  [innerHTML]="html"
+></div>
+
+<button mat-raised-button (click)="showHtml()">Показать html</button>

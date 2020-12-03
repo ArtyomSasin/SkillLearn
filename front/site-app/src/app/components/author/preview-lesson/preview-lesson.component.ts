@@ -55,4 +55,9 @@ export class PreviewLessonComponent implements OnInit {
       this.showProgress = false;
     });
   }
+
+  editorClick(): void {
+
+  }
+
 }
