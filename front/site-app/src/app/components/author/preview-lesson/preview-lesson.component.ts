@@ -32,13 +32,13 @@ export class PreviewLessonComponent implements OnInit {
     this.route.params.subscribe(async params => {
       this.showProgress = true;
       console.log(params);
-
+      const userId = this.authService.user?.uid;
       this.courseId = params.courseId;
       this.lessonId = params.lessonId;
 
       // Получаем информациб о курсе и уроках
       const course = await this.courseService.getCourse(this.courseId, true);
-      if (course.authorId !== this.authService.user?.uid) {
+      if (!userId || course.authorId !== userId) {
         this.router.navigate(['/']);
         return;
       }
@@ -56,7 +56,7 @@ export class PreviewLessonComponent implements OnInit {
         const lesson = await this.courseService.getLesson(this.lessonId, true);
         this.lesson = lesson;
       } else {
-        this.lesson = { id: '', title: '', description: '', type: LessonTypes.theory, order: 0, content: '' };
+        this.lesson = { id: '', authorId: userId, title: '', description: '', type: LessonTypes.theory, order: 0, content: '' };
       }
       this.showProgress = false;
     });

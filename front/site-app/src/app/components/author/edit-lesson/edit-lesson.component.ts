@@ -53,7 +53,7 @@ export class EditLessonComponent implements OnInit {
 
       // Получаем информацию о курсе и уроках
       const course = await this.courseService.getCourse(this.courseId, true);
-      if (course.authorId !== this.authService.user?.uid) {
+      if (!userId || course.authorId !== userId) {
         this.router.navigate(['/']);
         return;
       }

@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [UnAuthorizeGuard] },
   { path: 'register', component: RegisterComponent, canActivate: [UnAuthorizeGuard] },
   { path: 'user', component: UserComponent, canActivate: [AuthorizeGuard] },
-  { path: '', component: DefaultComponent },
+  { path: '', component: DefaultComponent, pathMatch: 'full' },
   { path: '**', component: DefaultComponent },
 ];
 
