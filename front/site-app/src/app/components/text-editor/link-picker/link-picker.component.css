@@ -1,0 +1,34 @@
+.editor {
+  min-width: 350px;
+  padding: 10px;
+  margin: 0 10px;
+  border: 1px solid black;
+  border-radius: 6px;
+  overflow: scroll;
+}
+.table {
+  display: table;
+  border-spacing: 10px;
+}
+
+.row {
+  display: table-row;
+  align-items: center;
+  flex-wrap: nowrap;
+  margin-bottom: 20px;
+}
+.col {
+  display: table-cell;
+}
+.header {
+  display: flex;
+  margin-bottom: 10px;
+  justify-content: space-between;
+  font-size: 16px;
+}
+
+.actions {
+  display: flex;
+  margin-top: 10px;
+  justify-content: space-between;
+}

@@ -1,0 +1,47 @@
+<div>
+  <div class="header">
+    <div style="margin-bottom: 10px">Добавление ссылки</div>
+    <mat-icon
+      matTooltip="Закрыть"
+      onmousedown="event.preventDefault();"
+      (click)="cancelClick()"
+      >close</mat-icon
+    >
+  </div>
+  <div class="table">
+    <div class="row">
+      <div class="col">Url - адрес</div>
+      <div id="url" class="col editor" [contentEditable]="true"></div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div style="display: flex">
+          <div>Подпись</div>
+          <mat-icon
+            style="margin: 0 10px"
+            matTooltip="Подпись - это текст, который будет виден пользователю, вместо ссылки"
+            >help</mat-icon
+          >
+        </div>
+      </div>
+      <div id="title" class="col editor" [contentEditable]="true"></div>
+    </div>
+  </div>
+  <div class="actions">
+    <button
+      mat-raised-button
+      onmousedown="event.preventDefault();"
+      (click)="cancelClick()"
+    >
+      Отмена
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      onmousedown="event.preventDefault();"
+      (click)="selectClick()"
+    >
+      Сохранить
+    </button>
+  </div>
+</div>

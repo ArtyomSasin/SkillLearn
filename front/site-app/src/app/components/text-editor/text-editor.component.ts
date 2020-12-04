@@ -1,5 +1,7 @@
 import { Component, Input, OnInit, } from '@angular/core';
 import { FormControl, } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { HtmlDialogComponent } from '../dialogs/html-dialog/html-dialog.component';
 
 @Component({
   selector: 'app-text-editor',
@@ -14,7 +16,7 @@ export class TextEditorComponent implements OnInit {
   fontSizeControl = new FormControl();
 
   private editor: HTMLElement | null = null;
-
+  private savedRange: Range | null = null;
   selectionLength = 0;
   formatBlocks = [
     { id: 'div', name: 'Обычный текст' },
@@ -83,13 +85,17 @@ export class TextEditorComponent implements OnInit {
     */
   ];
 
-  color: string | null = 'rgb(150, 150, 150)';
-  backgroundColor: string | null = 'transparent';
+  color = 'black';
+  backgroundColor = 'transparent';
 
   showColor = false;
   showBackgroundColor = false;
+  showLink = false;
 
-  constructor() { }
+  constructor(
+    private dialog: MatDialog,
+
+  ) { }
 
   ngOnInit(): void {
     this.editor = document.getElementById('editor');
@@ -135,7 +141,11 @@ export class TextEditorComponent implements OnInit {
   }
 
   /** Выбор выравнивания */
-  selectLink(): void { }
+  selectLink(): void {
+    // Запоминам selection
+    this.saveSelection();
+    this.showLink = true;
+  }
   selectPhoto(): void { }
   selectTable(): void { }
   selectCode(): void { }
@@ -152,8 +162,10 @@ export class TextEditorComponent implements OnInit {
     this.formatDoc('formatblock', 'blockquote');
   }
   /** Вставить ссылку */
-  addLink(url: string, text?: string): void {
-    const html = '<a href="' + url + '" target="_blank">' + text ?? url + '</a>';
+  addLink(model: any): void {
+    this.showLink = false;
+    this.restoreSelection();
+    const html = '<a href="' + model.url + '" target="_blank">' + (model.title ?? model.url) + '</a>';
     this.formatDoc('insertHTML', html);
   }
 
@@ -174,7 +186,7 @@ export class TextEditorComponent implements OnInit {
   /** Форматирование документа */
   formatDoc(command: string, value?: string): boolean {
     const result = document.execCommand(command, false, value);
-    console.log('command: ', command, 'result: ', result);
+    console.log('command: ', command, 'value: ', value, 'result: ', result);
     // result = document.queryCommandEnabled(command);
     this.editor?.focus();
     if (!result) {
@@ -202,6 +214,9 @@ export class TextEditorComponent implements OnInit {
   showHtml(): void {
     console.log(`html: ${this.editor?.innerHTML}`);
     console.log(`text: ${this.editor?.textContent}`);
+    this.dialog.open(HtmlDialogComponent, {
+      data: this.editor?.innerHTML
+    });
   }
 
   updateMenu(): void {
@@ -209,8 +224,37 @@ export class TextEditorComponent implements OnInit {
     this.calculate(selection);
   }
 
+  /** Запоминает место выделения/фокуса */
+  private saveSelection(): void {
+    // Взято с https://stackoverflow.com/questions/1181700/set-cursor-position-on-contenteditable-div
+    if (document.getSelection) {
+      this.savedRange = document.getSelection()?.getRangeAt(0) ?? null;
+    } else {
+      this.savedRange = document.createRange(); // IE
+    }
+  }
+
+  /** Восстанавливает фокус в editor на прошлое место */
+  private restoreSelection(): void {
+    // Взято с https://stackoverflow.com/questions/1181700/set-cursor-position-on-contenteditable-div
+    this.editor?.focus();
+    if (this.savedRange != null) {
+      if (document.getSelection()) {
+        const s = window.getSelection();
+        if (s && s.rangeCount > 0) {
+          s?.removeAllRanges();
+        }
+        s?.addRange(this.savedRange);
+      }
+      else if (document.createRange()) {
+        document.getSelection()?.addRange(this.savedRange);
+      }
+    }
+  }
+
   private calculate(selection: Selection | null): void {
     setTimeout(() => {
+      this.saveSelection();
       this.selectionLength = selection?.toString()?.length ?? 0;
 
       // Стиль текста
@@ -226,8 +270,8 @@ export class TextEditorComponent implements OnInit {
       this.fontSizeControl.patchValue(this.getAvailableFontSize(fontSize), { emitEvent: false });
 
       // Цвета
-      this.color = this.getFormatValue('forecolor')?.toLowerCase() ?? null;
-      this.backgroundColor = this.getFormatValue('backcolor')?.toLowerCase() ?? null;
+      this.color = this.getFormatValue('forecolor')?.toLowerCase() ?? 'black';
+      this.backgroundColor = this.getFormatValue('backcolor')?.toLowerCase() ?? 'transparent';
     });
   }
 
@@ -267,7 +311,6 @@ export class TextEditorComponent implements OnInit {
 
   private getAvailableFontSize(fontSize: string | null): any {
     let size: string;
-    console.log(fontSize);
 
     if (!fontSize || fontSize.length === 0) {
       size = '3';

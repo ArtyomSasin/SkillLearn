@@ -22,6 +22,6 @@ export class ColorPickerComponent implements OnInit {
   }
 
   cancelClick(): void {
-    this.canceled?.emit(this.color);
+    this.canceled?.emit();
   }
 }

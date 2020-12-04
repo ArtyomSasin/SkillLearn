@@ -253,7 +253,7 @@
  -->
 </div>
 
-<div *ngIf="showColor || showBackgroundColor" class="shadow">
+<div *ngIf="showColor || showBackgroundColor || showLink" class="shadow">
   <div class="color-container">
     <app-color-picker
       *ngIf="showColor"
@@ -272,6 +272,13 @@
       (canceled)="showBackgroundColor = false"
     >
     </app-color-picker>
+
+    <app-link-picker
+      *ngIf="showLink"
+      (selected)="addLink($event)"
+      (canceled)="showLink = false"
+    >
+    </app-link-picker>
   </div>
 </div>
 
