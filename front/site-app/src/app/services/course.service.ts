@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Course } from '../shared/models/course';
 import { Lesson, toDbContent, toDbLesson } from '../shared/models/lesson';
@@ -15,17 +14,31 @@ export class CourseService {
 
   constructor(private firestore: AngularFirestore) { }
 
-  public getCoursesBySkill(skillGroupIds: string[]): Observable<Course[]> {
-    console.log('getCoursesBySkill() skillGroupIds: ', skillGroupIds);
+  /** Является ли пользователь автором статьи */
+  public async isAuthorLesson(userId: string, lessonId: string): Promise<boolean> {
+    console.log('isAuthorLesson() usesrId: ', userId, 'lessonId: ', lessonId);
+    const lesson = await this.getLesson(lessonId, false);
+    return lesson.authorId === userId ? true : false;
+  }
 
+  /** Является ли пользователь автором курса */
+  public async isAuthorCourse(userId: string, courseId: string): Promise<boolean> {
+    console.log('isAuthorCourse() usesrId: ', userId, 'courseId: ', courseId);
+    const course = await this.getCourse(courseId, false);
+    return course.authorId === userId ? true : false;
+  }
+
+  public getCoursesBySkill(skillGroupIds: string[]): Promise<Course[]> {
+    console.log('getCoursesBySkill() skillGroupIds: ', skillGroupIds);
     return this.firestore
       .collection(this.courses, ref => ref.where('skillGroupIds', 'array-contains-any', skillGroupIds))
-      .valueChanges() as Observable<Course[]>;
+      .get()
+      .pipe(map(value => value.docs.map(c => c.data() as Course)))
+      .toPromise();
   }
 
   public async getCourse(courseId: string, withLessons: boolean): Promise<Course> {
     console.log('getCourse() courseId: ', courseId);
-
     const course = await this.firestore.collection(this.courses)
       .doc(courseId)
       .get()
@@ -44,10 +57,7 @@ export class CourseService {
     console.log('getLessons() lessonIds: ', lessonIds);
     return this.firestore.collection(this.lessons, ref => ref.where('id', 'in', lessonIds))
       .get()
-      .pipe(map(value => {
-        console.log(value);
-        return value.docs.map(d => d.data() as Lesson);
-      }))
+      .pipe(map(value => value.docs.map(d => d.data() as Lesson)))
       .toPromise();
   }
 
@@ -74,10 +84,8 @@ export class CourseService {
 
   public updateLesson(lesson: Lesson): Promise<void> {
     console.log('updateLesson() lesson: ', lesson);
-
     const refLesson = this.firestore.collection(this.lessons).doc(lesson.id).ref;
     const refContent = this.firestore.collection(this.contents).doc(lesson.id).ref;
-
     return this.firestore.firestore.runTransaction(transaction => {
       return transaction.get(refLesson).then(snapshot => {
         transaction

@@ -36,32 +36,32 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  register(): void {
+  async register(): Promise<void> {
     if (this.form.valid) {
       this.showProgress = true;
-      this.authService.registerByEmail(this.form.controls.email.value, this.form.controls.password.value)
-        .then(res => {
-          this.router.navigate(['']);
-        }, err => {
-          console.error(err);
-          const code = err?.code;
-          if (code) {
-            const control = getControlByError(code);
-            const message = getMessageByError(code);
-            console.log(`control: ${control}, message: ${message}`);
+      try {
+        await this.authService.registerByEmail(this.form.controls.email.value, this.form.controls.password.value);
+        await this.router.navigate(['/']);
+      } catch (err) {
+        console.error(err);
+        const code = err?.code;
+        if (code) {
+          const control = getControlByError(code);
+          const message = getMessageByError(code);
+          console.log(`control: ${control}, message: ${message}`);
 
-            if (control && message) {
-              this.form.get(control)?.setErrors({ customError: message });
-              this.snackBar.open(message, 'ОК', {
-                duration: 5000,
-              });
-            }
-          } else {
-            this.snackBar.open(err.message, 'ОК', {
+          if (control && message) {
+            this.form.get(control)?.setErrors({ customError: message });
+            this.snackBar.open(message, 'ОК', {
               duration: 5000,
             });
           }
-        });
+        } else {
+          this.snackBar.open(err.message, 'ОК', {
+            duration: 5000,
+          });
+        }
+      }
       this.showProgress = false;
     }
   }

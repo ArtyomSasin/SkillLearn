@@ -16,11 +16,4 @@ export class SkillService {
       .collection(this.skillGroups)
       .valueChanges() as Observable<SkillGroup[]>;
   }
-
-  public getSkillGroups(skillGroupIds: number[]): Observable<SkillGroup[]> {
-    console.log('getSkillGroups() skillGroupIds: ', skillGroupIds);
-    return this.firestore
-      .collection(this.skillGroups, ref => ref.where('id', 'in', skillGroupIds))
-      .valueChanges() as Observable<SkillGroup[]>;
-  }
 }

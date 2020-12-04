@@ -1,6 +1,11 @@
 <mat-form-field appearance="outline">
   <mat-label>Эл. почта</mat-label>
-  <input matInput [formControl]="control" placeholder="email@mail.com" />
+  <input
+    matInput
+    [formControl]="control"
+    autocomplete="username"
+    placeholder="email@mail.com"
+  />
 
   <mat-error *ngIf="control?.hasError('required')">
     Введите эл. почту

@@ -30,21 +30,40 @@ export class AuthService {
           this.onAuthUserSuccess?.emit(true);
         }
       } catch (e) {
-        console.warn('error: ', e);
+        console.error('error: ', e);
       }
+      return user;
     });
   }
 
   /** Получение текщуего пользователя */
   public get user(): firebase.User | null {
-    return this.currentUser;
+    return this.currentUser ?? firebase.auth().currentUser;
+  }
+
+  async getCurrentUser(): Promise<firebase.User | null> {
+    return new Promise((resolve, reject) => {
+      if (this.user) {
+        console.log('user from cache: ', this.user);
+        resolve(this.user);
+        return;
+      }
+      const unsubscribe = firebase.auth().onAuthStateChanged(async user => {
+        unsubscribe();
+        if (!user) {
+          await this.loginAnonymous();
+          user = firebase.auth().currentUser;
+        }
+        resolve(user);
+      }, reject);
+    });
   }
 
   /** Вход по электронной почте */
   public async loginByEmail(email: string, password: string): Promise<any> {
     const user = this.user;
     await firebase.auth().setPersistence(_PERSISTENCE);
-    return firebase.auth().signInWithEmailAndPassword(email, password).then(async credentail => {
+    return await firebase.auth().signInWithEmailAndPassword(email, password).then(async credentail => {
       if (user?.isAnonymous) {
         // удаляем анонимного пользователя
         await user.delete();
@@ -64,7 +83,7 @@ export class AuthService {
   public registerByEmail(email: string, password: string): Promise<any> {
     const anonymous = this.user;
     const credential = firebase.auth.EmailAuthProvider.credential(email, password);
-    return firebase.auth().setPersistence(_PERSISTENCE).then(persist => this.linkWithCredentail(anonymous, credential));
+    return firebase.auth().setPersistence(_PERSISTENCE).then(async persist => await this.linkWithCredentail(anonymous, credential));
   }
 
   /** Осуществляет вход с помощью учетной записи google */
@@ -75,8 +94,8 @@ export class AuthService {
     provider.addScope('profile');
     provider.addScope('email');
 
-    return firebase.auth().setPersistence(_PERSISTENCE).then(persist => this.afAuth.signInWithPopup(provider)
-      .then(res => this.linkWithCredentail(anonymous, res?.credential)));
+    return firebase.auth().setPersistence(_PERSISTENCE).then(async persist => await this.afAuth.signInWithPopup(provider)
+      .then(async res => await this.linkWithCredentail(anonymous, res?.credential)));
   }
 
   /** Выход из учетной записи */
@@ -87,8 +106,8 @@ export class AuthService {
 
   /** Анонимный вход */
   private loginAnonymous(): Promise<any> {
-    return firebase.auth().setPersistence(_PERSISTENCE).then(persist =>
-      firebase.auth().signInAnonymously()
+    return firebase.auth().setPersistence(_PERSISTENCE).then(async persist =>
+      await firebase.auth().signInAnonymously()
         .then((userCredential) => console.log('userCredential: ', userCredential))
         .catch((error) => {
           const errorCode = error.code;
@@ -110,12 +129,12 @@ export class AuthService {
       throw new Error('credential can not be null');
     }
     return new Promise<any>((resolve, reject) => {
-      anonymousUser?.linkWithCredential(credential)
-        .then(usercred => {
+      return anonymousUser?.linkWithCredential(credential)
+        .then(async usercred => {
           console.log('Anonymous account successfully upgraded', usercred.user);
           if (usercred.user?.uid) {
             console.log('createUserData');
-            this.userService.createUserData(usercred.user?.uid);
+            await this.userService.createUserData(usercred.user?.uid);
           }
           resolve(usercred);
         }).catch(error => {

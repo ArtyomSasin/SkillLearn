@@ -19,16 +19,6 @@ export class AuthorService {
       .toPromise();
   }
 
-  /** Является ли пользователь автором */
-  public async isAuthor(userId: string): Promise<boolean> {
-    console.log('isAuthor() usesrId: ', userId);
-    const author = await this.getAuthor(userId);
-    if (author && author.id === userId) {
-      return true;
-    }
-    return false;
-  }
-
   /** Создание автора  */
   public createAuthor(userId: string, name: string): Promise<void> {
     console.log('createAuthor() userId: ', userId);

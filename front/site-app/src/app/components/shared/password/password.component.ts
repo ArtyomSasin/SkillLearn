@@ -8,7 +8,7 @@ import { AbstractControl, FormControl } from '@angular/forms';
 })
 export class PasswordComponent implements OnInit {
   @Input() control: FormControl = new FormControl();
-
+  @Input() autocomplete = 'current-password';
   hidePassword = true;
 
   constructor() { }
