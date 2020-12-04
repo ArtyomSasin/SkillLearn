@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import {  Component, NgZone, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { CourseService } from 'src/app/services/course.service';
 import { SkillService } from 'src/app/services/skill.service';
@@ -15,6 +15,7 @@ export class DefaultComponent implements OnInit {
   skillGroups$ = new Observable<SkillGroup[]>();
   courses: Course[] = [];
   userSkillGroupIds: string[] = [];
+  showProgress = false;
 
   get userName(): string | null | undefined {
     return this.authService.user?.displayName;
@@ -35,26 +36,46 @@ export class DefaultComponent implements OnInit {
     private courseService: CourseService,
     private skillService: SkillService,
     private userService: UserService,
+    private ngZone: NgZone,
   ) {
+    this.authService.onAuthUserSuccess.subscribe((value: any) => {
+      this.ngZone.run(() => {
+        this.showProgress = true;
+        try {
+          if (value) {
+            this.loadSkills();
+          }
+        } catch (e) {
+          console.error(e);
+        }
+        this.showProgress = false;
+      });
+    });
   }
 
-  ngOnInit(): void {
-    this.authService.onAuthUserSuccess.subscribe((value: any) => {
-      if (value) {
-        this.loadSkills();
+  async ngOnInit(): Promise<void> {
+    this.showProgress = true;
+    try {
+      this.skillGroups$ = this.skillService.getAllSkillGroups();
+      if (!this.userId) {
+        await this.authService.getCurrentUser();
+      } else {
+        if (this.userSkillGroupIds.length === 0) {
+          await this.loadSkills();
+        }
       }
-    });
-    this.loadSkills();
+    } catch (e) {
+      console.error(e);
+    }
+    this.showProgress = false;
   }
 
   async loadSkills(): Promise<void> {
-    this.skillGroups$ = this.skillService.getAllSkillGroups();
     if (this.userId && this.isLogged) {
       this.userSkillGroupIds = await this.userService.getUserSkillGroupsIds(this.userId);
       if (this.userSkillGroupIds?.length > 0) {
         await this.loadCourses();
       }
-      console.log('userSkillGroupIds changes: ', this.userSkillGroupIds);
     }
   }
 
@@ -62,16 +83,14 @@ export class DefaultComponent implements OnInit {
     return this.authService.logOut();
   }
 
-  loadCourses(): void {
+  async loadCourses(): Promise<void> {
+    this.showProgress = true;
     if (this.userSkillGroupIds.length > 0) {
-      this.courseService.getCoursesBySkill(this.userSkillGroupIds).subscribe(courses => {
-        this.courses = courses;
-        console.log('courses: ', courses);
-      });
-    }
-    else {
+      this.courses = await this.courseService.getCoursesBySkill(this.userSkillGroupIds);
+    } else {
       this.courses = [];
     }
+    this.showProgress = false;
   }
 
   isSelectedSkillGroup(skillGroup: SkillGroup): boolean {
@@ -87,7 +106,6 @@ export class DefaultComponent implements OnInit {
       this.userSkillGroupIds.push(skillGroup.id);
     }
     if (this.userId && this.isLogged) {
-      console.log('updateUserSkillGroups: ', this.userSkillGroupIds);
       await this.userService.updateUserSkillGroups(this.userId, this.userSkillGroupIds);
     }
   }

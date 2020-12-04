@@ -13,6 +13,11 @@ h2 {
   font-weight: 300;
   font-size: 32px;
 }
+.progress-indicator {
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+}
 
 .skill-groups {
   padding-top: 20px;

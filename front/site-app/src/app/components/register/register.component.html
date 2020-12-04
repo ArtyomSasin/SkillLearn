@@ -2,7 +2,11 @@
 <form *ngIf="!showProgress" [formGroup]="form" class="form">
   <h1>Регистрация</h1>
   <app-email [control]="email" class="control"></app-email>
-  <app-password [control]="password" class="control"></app-password>
+  <app-password
+    [control]="password"
+    autocomplete="new-password"
+    class="control"
+  ></app-password>
 
   <div class="actions">
     <button mat-raised-button color="primary" (click)="register()">

@@ -63,6 +63,9 @@
       <span>Найти курсы</span>
     </button>
   </div>
+  <div class="progress-indicator" *ngIf="showProgress">
+    <mat-spinner></mat-spinner>
+  </div>
   <div class="courses" *ngIf="courses.length > 0">
     <h2>Курсы:</h2>
     <div class="course-list">

@@ -26,6 +26,9 @@ import { PipesModule } from './pipes.module';
 import { HtmlDialogModule } from './components/dialogs/html-dialog/html-dialog.module';
 import { AuthorModule } from './components/author/author.module';
 import { TextEditorModule } from './components/text-editor/text-editor.module';
+import { OnlyAuthorGuard } from './only-author.guard';
+import { NotAuthorComponent } from './components/not-author/not-author.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyD84KD37S_La_RWQiGwJiZQgpgFtxPm56s',
@@ -49,6 +52,8 @@ firebase.initializeApp(firebaseConfig);
     UserComponent,
     PasswordComponent,
     EmailComponent,
+    NotAuthorComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,6 +79,7 @@ firebase.initializeApp(firebaseConfig);
     AuthorizeGuard,
     AuthService,
     UnAuthorizeGuard,
+    OnlyAuthorGuard,
   ],
   bootstrap: [AppComponent]
 })

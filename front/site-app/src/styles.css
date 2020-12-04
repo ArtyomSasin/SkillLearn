@@ -33,6 +33,22 @@ h1 {
   font-size: 58px !important;
 }
 
+.center {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.background-shadow {
+  background: rgba(0, 0, 0, 0.32);
+}
+
+.warn {
+  background-color: #f44336;
+  color: #fff;
+}
+
 .container {
   padding: 20px;
   max-width: 1024px;

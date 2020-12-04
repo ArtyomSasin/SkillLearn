@@ -47,16 +47,13 @@ export class EditLessonComponent implements OnInit {
     this.route.params.subscribe(async params => {
       this.showProgress = true;
       console.log(params);
-      const userId = this.authService.user?.uid;
+      const user = await this.authService.getCurrentUser();
+      const userId = user?.uid;
       this.courseId = params.courseId;
       this.lessonId = params.lessonId;
 
       // Получаем информацию о курсе и уроках
       const course = await this.courseService.getCourse(this.courseId, true);
-      if (!userId || course.authorId !== userId) {
-        this.router.navigate(['/']);
-        return;
-      }
       console.log('course: ', course);
 
       // Вычисляем максимальный порядковый номер статей

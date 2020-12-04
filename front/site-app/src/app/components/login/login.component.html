@@ -5,7 +5,9 @@
   <app-password [control]="password" class="control"></app-password>
 
   <div class="actions">
-    <button mat-raised-button color="primary" (click)="login()">Войти</button>
+    <button type="button" mat-raised-button color="primary" (click)="login()">
+      Войти
+    </button>
   </div>
   <a [routerLink]="['/register']" color="primary" class="register-link"
     >Еще нет учетной записи? Зарегистрируйся!</a

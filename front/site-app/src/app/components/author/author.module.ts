@@ -9,6 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HtmlDialogModule } from '../dialogs/html-dialog/html-dialog.module';
 import { PreviewLessonComponent } from './preview-lesson/preview-lesson.component';
 import { TextEditorModule } from '../text-editor/text-editor.module';
+import { EditCourseComponent } from './edit-course/edit-course.component';
 
 @NgModule({
   imports: [
@@ -21,7 +22,7 @@ import { TextEditorModule } from '../text-editor/text-editor.module';
     TextEditorModule,
     AuthorRoutes,
   ],
-  exports: [EditLessonComponent, PreviewLessonComponent],
-  declarations: [EditLessonComponent, PreviewLessonComponent]
+  exports: [EditLessonComponent, PreviewLessonComponent, EditCourseComponent],
+  declarations: [EditLessonComponent, PreviewLessonComponent, EditCourseComponent]
 })
 export class AuthorModule { }

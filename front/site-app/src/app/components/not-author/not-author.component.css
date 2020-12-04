@@ -1,0 +1,10 @@
+.actions {
+  display: flex;
+  margin: 0 10px;
+  justify-content: space-between;
+}
+.container {
+  margin: auto;
+  width: 500px;
+  padding-bottom: 30px;
+}
