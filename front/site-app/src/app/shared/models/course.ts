@@ -10,7 +10,6 @@ export class Course {
     lessonIds?: string[];
     skillGroupIds?: string[];
 
-
     // Поля LazyLoading
     /** Автор */
     author?: Author;

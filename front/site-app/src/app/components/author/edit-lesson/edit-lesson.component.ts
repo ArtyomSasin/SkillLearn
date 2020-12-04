@@ -47,7 +47,7 @@ export class EditLessonComponent implements OnInit {
     this.route.params.subscribe(async params => {
       this.showProgress = true;
       console.log(params);
-
+      const userId = this.authService.user?.uid;
       this.courseId = params.courseId;
       this.lessonId = params.lessonId;
 
@@ -71,7 +71,7 @@ export class EditLessonComponent implements OnInit {
         const lesson = await this.courseService.getLesson(this.lessonId, true);
         this.form.patchValue(lesson);
       } else {
-        this.form.patchValue({ id: null, title: '', description: '', type: LessonTypes.theory, order: 0, content: '' });
+        this.form.patchValue({ id: null, authorId: userId, title: '', description: '', type: LessonTypes.theory, order: 0, content: '' });
       }
 
       this.showProgress = false;

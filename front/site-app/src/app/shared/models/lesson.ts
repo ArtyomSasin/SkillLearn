@@ -10,6 +10,7 @@ export enum LessonTypes {
 
 /** Базовый класс урока */
 export class Lesson {
+    authorId: string;
     /** id */
     id: string;
     /** Название */
@@ -25,6 +26,7 @@ export class Lesson {
 
     constructor(
         id: string,
+        authorId: string,
         title: string,
         order: number,
         type: LessonTypes,
@@ -32,6 +34,7 @@ export class Lesson {
         description?: string,
     ) {
         this.id = id;
+        this.authorId = authorId;
         this.title = title;
         this.description = description;
         this.order = order;
@@ -44,6 +47,7 @@ export class Lesson {
 export function toDbLesson(lesson: Lesson): any {
     return {
         id: lesson.id,
+        authorId: lesson.authorId,
         title: lesson.title,
         description:
             lesson.description,
@@ -56,6 +60,7 @@ export function toDbLesson(lesson: Lesson): any {
 export function toDbContent(lesson: Lesson): any {
     return {
         id: lesson.id,
+        authorId: lesson.authorId,
         content: lesson.content,
     };
 }
