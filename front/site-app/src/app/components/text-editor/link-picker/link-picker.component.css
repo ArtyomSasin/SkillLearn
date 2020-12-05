@@ -1,14 +1,15 @@
 .editor {
   min-width: 350px;
-  padding: 10px;
-  margin: 0 10px;
+  padding: 0 10px;
+  margin-left: 10px;
   border: 1px solid black;
   border-radius: 6px;
   overflow: scroll;
+  box-sizing: border-box;
 }
 .table {
   display: table;
-  border-spacing: 10px;
+  border-spacing: 0 10px;
 }
 
 .row {

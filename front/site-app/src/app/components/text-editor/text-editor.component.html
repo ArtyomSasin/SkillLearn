@@ -174,25 +174,24 @@
     </mat-button-toggle>
   </mat-button-toggle-group>
 
-  <!--<button
-    mat-stroked-button
-    matTooltip="Добавить"
-    (click)="add()"
+  <mat-button-toggle-group
+    name="addItem"
     onmousedown="event.preventDefault();"
+    (change)="openDialog($event.value)"
   >
-    <mat-icon>add_circle_outline</mat-icon>
-  </button>-->
-
-  <mat-button-toggle-group name="addItem" onmousedown="event.preventDefault();">
     <mat-button-toggle
-      (click)="selectLink()"
+      [disabled]="!menuEnabled"
+      (click)="openDialog('link')"
+      [checked]="isLinkSelected()"
       matTooltip="Вставить ссылку"
       value="link"
     >
       <mat-icon>insert_link</mat-icon>
     </mat-button-toggle>
     <mat-button-toggle
-      (click)="selectPhoto()"
+      [disabled]="!menuEnabled"
+      (click)="openDialog('photo')"
+      [checked]="false"
       matTooltip="Вставить изображение"
       value="photo"
     >
@@ -200,7 +199,9 @@
     </mat-button-toggle>
 
     <mat-button-toggle
-      (click)="selectCode()"
+      [disabled]="!menuEnabled"
+      (click)="openDialog('code')"
+      [checked]="false"
       matTooltip="Вставить код"
       value="code"
     >
@@ -208,7 +209,9 @@
     </mat-button-toggle>
 
     <mat-button-toggle
-      (click)="selectQuote()"
+      [disabled]="!menuEnabled"
+      (click)="openDialog('quote')"
+      [checked]="false"
       matTooltip="Вставить цитату"
       value="quote"
     >
@@ -216,15 +219,9 @@
     </mat-button-toggle>
 
     <mat-button-toggle
-      (click)="selectPhoto()"
-      matTooltip="Вставить изображение"
-      value="photo"
-    >
-      <mat-icon>insert_photo</mat-icon>
-    </mat-button-toggle>
-
-    <mat-button-toggle
-      (click)="selectTable()"
+      [disabled]="!menuEnabled"
+      (click)="openDialog('table')"
+      [checked]="false"
       matTooltip="Вставить таблицу"
       value="table"
     >
@@ -259,7 +256,7 @@
  -->
 </div>
 
-<div *ngIf="showColor || showBackgroundColor || showLink" class="shadow">
+<div *ngIf="showColor || showBackgroundColor" class="shadow">
   <div class="color-container">
     <app-color-picker
       *ngIf="showColor"
@@ -278,13 +275,6 @@
       (canceled)="showBackgroundColor = false"
     >
     </app-color-picker>
-
-    <app-link-picker
-      *ngIf="showLink"
-      (selected)="addLink($event)"
-      (canceled)="showLink = false"
-    >
-    </app-link-picker>
   </div>
 </div>
 
@@ -293,6 +283,8 @@
   class="editor"
   (mouseup)="updateMenu()"
   (keydown)="updateMenu()"
+  (blur)="editorBlur()"
+  (focus)="editorFocus()"
   contenteditable="true"
   spellcheck="true"
   [innerHTML]="html"

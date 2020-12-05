@@ -3,6 +3,7 @@ import { FormControl, } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ColorGroup } from 'src/app/shared/models/color';
 import { HtmlDialogComponent } from '../dialogs/html-dialog/html-dialog.component';
+import { LinkPickerComponent } from './link-picker/link-picker.component';
 
 @Component({
   selector: 'app-text-editor',
@@ -174,11 +175,10 @@ export class TextEditorComponent implements OnInit {
 
   showColor = false;
   showBackgroundColor = false;
-  showLink = false;
+  menuEnabled = false;
 
   constructor(
     private dialog: MatDialog,
-
   ) { }
 
   ngOnInit(): void {
@@ -224,16 +224,46 @@ export class TextEditorComponent implements OnInit {
     this.formatDoc('fontsize', size);
   }
 
-  /** Выбор выравнивания */
-  selectLink(): void {
+  /** Открытие окна со ссылкой  */
+  private openLinkDialog(): void {
     // Запоминам selection
     this.saveSelection();
-    this.showLink = true;
+
+    let title; let url;
+
+    // Если выделен текст
+    if (this.selectionLength > 0) {
+      const content = this.savedRange?.cloneContents();
+      const ancestor = this.savedRange?.commonAncestorContainer;
+      const tagName = ancestor?.nodeName?.toLowerCase();
+
+      title = content?.textContent;
+
+      // Если tagName - text, смотрим родительский тэг
+      // и если он ссылка, извлекаем url и title
+      if (tagName === '#text') {
+        const parent = ancestor?.parentElement;
+        if (parent?.tagName?.toLowerCase() === 'a') {
+          url = parent.getAttribute('href');
+          title = parent.textContent;
+        }
+      }
+    }
+
+    // Передаем в окно текст ссылки и ее url
+    this.dialog.open(LinkPickerComponent, {
+      data: { url: url ?? '', title: title ?? '' }
+    }).afterClosed().subscribe(value => {
+      this.restoreSelection();
+      if (value) {
+        this.addLink(value);
+      }
+    });
   }
-  selectPhoto(): void { }
-  selectTable(): void { }
-  selectCode(): void { }
-  selectQuote(): void { }
+  private openPhotoDialog(): void { }
+  private openTableDialog(): void { }
+  private openCodeDialog(): void { }
+  private openQuoteDialog(): void { }
 
   /** Очистка текста */
   clearText(): void {
@@ -247,8 +277,6 @@ export class TextEditorComponent implements OnInit {
   }
   /** Вставить ссылку */
   addLink(model: any): void {
-    this.showLink = false;
-    this.restoreSelection();
     const html = '<a href="' + model.url + '" target="_blank">' + (model.title ?? model.url) + '</a>';
     this.formatDoc('insertHTML', html);
   }
@@ -312,12 +340,50 @@ export class TextEditorComponent implements OnInit {
 
   /** Запоминает место выделения/фокуса */
   private saveSelection(): void {
+    this.savedRange = null;
     // Взято с https://stackoverflow.com/questions/1181700/set-cursor-position-on-contenteditable-div
     if (document.getSelection) {
-      this.savedRange = document.getSelection()?.getRangeAt(0) ?? null;
+      if (document?.getSelection()?.rangeCount ?? 0 > 0) {
+        this.savedRange = document.getSelection()?.getRangeAt(0) ?? null;
+      }
     } else {
       this.savedRange = document.createRange(); // IE
     }
+  }
+
+  isLinkSelected(): boolean {
+    if (!this.savedRange) {
+      return false;
+    }
+    const ancestor = this.savedRange?.commonAncestorContainer;
+    const tagName = ancestor?.nodeName?.toLowerCase();
+    if (tagName === '#text') {
+      const parent = ancestor?.parentElement;
+      if (parent?.tagName?.toLowerCase() === 'a') {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  openDialog(dialogType: string): void {
+    if (!this.menuEnabled) { return; }
+    switch (dialogType) {
+      case 'link': this.openLinkDialog(); break;
+      case 'photo': this.openPhotoDialog(); break;
+      case 'code': this.openCodeDialog(); break;
+      case 'quote': this.openQuoteDialog(); break;
+      case 'table': this.openTableDialog(); break;
+      default: console.warn('Неизвестная комманда: ', dialogType);
+    }
+  }
+
+  editorBlur(): void {
+    this.menuEnabled = false;
+  }
+
+  editorFocus(): void {
+    this.menuEnabled = true;
   }
 
   /** Восстанавливает фокус в editor на прошлое место */
