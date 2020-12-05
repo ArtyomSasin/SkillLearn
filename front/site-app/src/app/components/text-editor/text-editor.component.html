@@ -110,10 +110,13 @@
       matTooltip="Цвет текста"
       value="text"
     >
-      <mat-icon [ngStyle]="{ color: color, 'padding-right': '10px' }"
-        >circle</mat-icon
-      >
-      <mat-icon>format_color_text</mat-icon>
+      <span style="display: flex">
+        <span
+          [ngStyle]="{ backgroundColor: color, marginRight: '10px' }"
+          class="color"
+        ></span>
+        <mat-icon>format_color_text</mat-icon>
+      </span>
     </button>
     <mat-divider [vertical]="true"></mat-divider>
     <button
@@ -123,10 +126,13 @@
       matTooltip="Цвет заливки"
       value="text"
     >
-      <mat-icon [ngStyle]="{ color: backgroundColor, 'padding-right': '10px' }"
-        >circle</mat-icon
-      >
-      <mat-icon>format_color_fill</mat-icon>
+      <span style="display: flex">
+        <span
+          [ngStyle]="{ backgroundColor: backgroundColor, marginRight: '10px' }"
+          class="color"
+        ></span>
+        <mat-icon>format_color_fill</mat-icon>
+      </span>
     </button>
   </mat-button-toggle-group>
 
@@ -258,7 +264,7 @@
     <app-color-picker
       *ngIf="showColor"
       [color]="color"
-      [colors]="colors"
+      [colorGroups]="colorGroups"
       (selected)="changeColor($event)"
       (canceled)="showColor = false"
     >
@@ -266,7 +272,7 @@
 
     <app-color-picker
       *ngIf="showBackgroundColor"
-      [colors]="colors"
+      [colorGroups]="colorGroups"
       [color]="backgroundColor"
       (selected)="changeBackgroundColor($event)"
       (canceled)="showBackgroundColor = false"

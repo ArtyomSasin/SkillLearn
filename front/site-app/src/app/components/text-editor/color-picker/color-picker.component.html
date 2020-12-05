@@ -8,15 +8,20 @@
       >close</mat-icon
     >
   </div>
-  <div class="colors">
-    <span
-      *ngFor="let c of colors"
-      class="color"
-      matTooltip="Нажми чтобы выбрать цвет"
-      [ngStyle]="{ backgroundColor: c }"
-      onmousedown="event.preventDefault();"
-      (click)="color = c; selectClick()"
-      ><mat-icon *ngIf="c === color">done</mat-icon></span
-    >
+  <div class="color-table">
+    <div *ngFor="let g of colorGroups" class="row">
+      <div class="col">{{ g.title }}</div>
+      <div class="flex">
+        <span
+          *ngFor="let c of g.colors"
+          class="color"
+          matTooltip="Нажми чтобы выбрать цвет"
+          [ngStyle]="{ backgroundColor: c }"
+          onmousedown="event.preventDefault();"
+          (click)="color = c; selectClick()"
+          ><mat-icon *ngIf="c === color">done</mat-icon></span
+        >
+      </div>
+    </div>
   </div>
 </div>

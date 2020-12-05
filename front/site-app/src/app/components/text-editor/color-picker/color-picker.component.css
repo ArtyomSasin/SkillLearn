@@ -1,12 +1,18 @@
-.colors {
+.flex {
   display: flex;
-  flex-wrap: wrap;
 }
 
-.colors > :nth-child(n) {
-  margin: 5px;
+.color-table {
+  display: table;
 }
 
+.color-table .row {
+  display: table-row;
+}
+.color-table .col {
+  display: table-cell;
+  vertical-align: middle;
+}
 .color > mat-icon {
   color: rgb(218, 220, 224);
 }
@@ -15,6 +21,5 @@
   display: flex;
   margin-bottom: 10px;
   justify-content: space-between;
-  margin-right: 20px;
   font-size: 16px;
 }
