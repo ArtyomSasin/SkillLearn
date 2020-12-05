@@ -1,10 +1,10 @@
-<div>
+<form [formGroup]="form">
   <div class="header">
     <div style="margin-bottom: 10px">Добавление ссылки</div>
     <mat-icon
       matTooltip="Закрыть"
       onmousedown="event.preventDefault();"
-      style="cursor: pointer;"
+      style="cursor: pointer"
       (click)="cancelClick()"
       >close</mat-icon
     >
@@ -12,11 +12,23 @@
   <div class="table">
     <div class="row">
       <div class="col">Url - адрес</div>
-      <input matInput class="col editor" [formControl]="urlControl" />
+      <input matInput class="col editor" formControlName="url" />
+      <mat-error
+        style="padding: 0 10px"
+        *ngIf="saveClicked && form.get('url')?.hasError('required')"
+      >
+        Введите Url - адрес
+      </mat-error>
     </div>
     <div class="row">
       <div class="col">Подпись</div>
-      <input matInput class="col editor" [formControl]="titleControl" />
+      <input matInput class="col editor" formControlName="title" />
+      <mat-error
+        style="padding: 0 10px"
+        *ngIf="saveClicked && form.get('title')?.hasError('required')"
+      >
+        Введите подпись
+      </mat-error>
     </div>
   </div>
   <div class="actions">
@@ -36,4 +48,4 @@
       Сохранить
     </button>
   </div>
-</div>
+</form>

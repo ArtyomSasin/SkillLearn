@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
@@ -8,9 +8,11 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./link-picker.component.css']
 })
 export class LinkPickerComponent implements OnInit {
-
-  urlControl = new FormControl();
-  titleControl = new FormControl();
+  form = new FormGroup({
+    url: new FormControl(null, [Validators.required]),
+    title: new FormControl(null, [Validators.required]),
+  });
+  saveClicked = false;
   isTitleChanged = false;
 
   constructor(
@@ -20,28 +22,29 @@ export class LinkPickerComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('data: ', this.data);
-    this.urlControl.valueChanges.subscribe(value => {
+    this.form.get('url')?.valueChanges.subscribe(value => {
       if (!this.isTitleChanged) {
-        this.titleControl.patchValue(value, { emitEvent: false });
+        this.form.get('title')?.patchValue(value, { emitEvent: false });
       }
     });
-    this.titleControl.valueChanges.subscribe(value => {
+    this.form.get('title')?.valueChanges.subscribe(value => {
       this.isTitleChanged = true;
     });
     if (this.data) {
       if (this.data.title) {
         this.isTitleChanged = true;
-        this.titleControl.patchValue(this.data.title, { emitEvent: false });
+        this.form.get('title')?.patchValue(this.data.title, { emitEvent: false });
       }
-      this.urlControl.patchValue(this.data.url);
+      this.form.get('url')?.patchValue(this.data.url);
     }
   }
 
   selectClick(): void {
-    const title = this.titleControl.value;
-    const url = this.urlControl.value;
-    const data = { title, url };
-    this.dialogRef?.close(data);
+    this.saveClicked = true;
+    if (this.form.valid) {
+      const data = this.form.getRawValue();
+      this.dialogRef?.close(data);
+    }
   }
 
   cancelClick(): void {
