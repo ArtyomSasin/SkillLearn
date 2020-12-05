@@ -38,7 +38,7 @@
   <div class="skill-groups">
     <div class="skill-groups-label">Выбрерите раздел:</div>
     <mat-chip-list
-      *ngIf="skillGroups$ | async; let groups"
+      *ngIf="skillGroups; let groups"
       [selectable]="true"
       [multiple]="true"
     >

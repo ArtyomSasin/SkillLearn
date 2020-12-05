@@ -1,5 +1,4 @@
-import {  Component, NgZone, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { CourseService } from 'src/app/services/course.service';
 import { SkillService } from 'src/app/services/skill.service';
@@ -12,7 +11,7 @@ import { SkillGroup } from 'src/app/shared/models/skill-group';
   styleUrls: ['./default.component.css']
 })
 export class DefaultComponent implements OnInit {
-  skillGroups$ = new Observable<SkillGroup[]>();
+  skillGroups: SkillGroup[] = [];
   courses: Course[] = [];
   userSkillGroupIds: string[] = [];
   showProgress = false;
@@ -56,7 +55,7 @@ export class DefaultComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.showProgress = true;
     try {
-      this.skillGroups$ = this.skillService.getAllSkillGroups();
+      this.skillGroups = await this.skillService.getAllSkillGroups();
       if (!this.userId) {
         await this.authService.getCurrentUser();
       } else {
@@ -73,9 +72,11 @@ export class DefaultComponent implements OnInit {
   async loadSkills(): Promise<void> {
     if (this.userId && this.isLogged) {
       this.userSkillGroupIds = await this.userService.getUserSkillGroupsIds(this.userId);
-      if (this.userSkillGroupIds?.length > 0) {
-        await this.loadCourses();
-      }
+    } else {
+      this.userSkillGroupIds = this.skillGroups.length > 0 ? [this.skillGroups[0].id] : [];
+    }
+    if (this.userSkillGroupIds?.length > 0) {
+      await this.loadCourses();
     }
   }
 
