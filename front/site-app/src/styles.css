@@ -50,9 +50,22 @@ h1 {
 }
 
 .container {
-  padding: 20px;
   max-width: 1024px;
   margin: 0 auto;
+}
+
+/* Для маленьких экранов */
+@media (max-width: 978px) {
+  .container {
+    padding: 10px;
+  }
+}
+
+/* Для Больших экранов */
+@media (min-width: 979px) {
+  .container {
+    padding: 20px;
+  }
 }
 
 .spacer {
