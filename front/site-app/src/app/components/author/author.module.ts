@@ -10,6 +10,7 @@ import { HtmlDialogModule } from '../dialogs/html-dialog/html-dialog.module';
 import { PreviewLessonComponent } from './preview-lesson/preview-lesson.component';
 import { TextEditorModule } from '../text-editor/text-editor.module';
 import { EditCourseComponent } from './edit-course/edit-course.component';
+import { HeaderModule } from '../shared/header/header.module';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { EditCourseComponent } from './edit-course/edit-course.component';
     ProgressBarModule,
     HtmlDialogModule,
     TextEditorModule,
+    HeaderModule,
     AuthorRoutes,
   ],
   exports: [EditLessonComponent, PreviewLessonComponent, EditCourseComponent],

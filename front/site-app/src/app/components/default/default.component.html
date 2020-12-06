@@ -1,34 +1,4 @@
-<header>
-  <mat-toolbar color="primary">
-    <button mat-icon-button>
-      <mat-icon>menu</mat-icon>
-    </button>
-    <span>SkillLearn</span>
-    <span class="spacer"></span>
-    <!--<button mat-icon-button>
-      <mat-icon>favorite</mat-icon>
-    </button>
-    <button mat-icon-button>
-      <mat-icon>share</mat-icon>
-    </button>-->
-    <button mat-icon-button [matMenuTriggerFor]="account">
-      <span *ngIf="userName">{{ userName }}</span>
-      <mat-icon>person</mat-icon>
-    </button>
-
-    <mat-menu #account>
-      <a *ngIf="!isLogged" mat-menu-item [routerLink]="['/login']">
-        <span>Войти</span>
-      </a>
-      <a *ngIf="!isLogged" mat-menu-item [routerLink]="['/register']">
-        <span>Зарегистрироваться</span>
-      </a>
-      <button *ngIf="isLogged" mat-menu-item (click)="logout()">
-        <span>Выйти</span>
-      </button>
-    </mat-menu>
-  </mat-toolbar>
-</header>
+<app-header></app-header>
 
 <div class="container">
   <h1>SkillLearn</h1>

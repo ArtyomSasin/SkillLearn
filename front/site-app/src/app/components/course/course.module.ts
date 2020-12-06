@@ -7,6 +7,7 @@ import { ProgressBarModule } from '../shared/progress-bar/progress-bar.module';
 import { LessonsComponent } from './lesson/lesson.component';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { PipesModule } from 'src/app/pipes.module';
+import { HeaderModule } from '../shared/header/header.module';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { PipesModule } from 'src/app/pipes.module';
     ProgressBarModule,
     CourseCardSmallModule,
     PipesModule,
+    HeaderModule,
   ],
   exports: [CourseComponent, LessonsComponent],
   declarations: [CourseComponent, LessonsComponent]

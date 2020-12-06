@@ -1,7 +1,7 @@
+<app-header></app-header>
 <app-progress-bar [show]="!lesson"></app-progress-bar>
-
-<div class="container">
-  <div *ngIf="lesson">
+<div class="container" *ngIf="lesson">
+  <div>
     <a mat-raised-button [routerLink]="['/course', courseId]">
       Назад к курсу
     </a>

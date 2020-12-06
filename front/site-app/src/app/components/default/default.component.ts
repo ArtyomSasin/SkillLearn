@@ -16,9 +16,6 @@ export class DefaultComponent implements OnInit {
   userSkillGroupIds: string[] = [];
   showProgress = false;
 
-  get userName(): string | null | undefined {
-    return this.authService.user?.displayName;
-  }
   get userId(): string | null | undefined {
     return this.authService.user?.uid;
   }
@@ -80,9 +77,7 @@ export class DefaultComponent implements OnInit {
     }
   }
 
-  logout(): Promise<void> {
-    return this.authService.logOut();
-  }
+  
 
   async loadCourses(): Promise<void> {
     this.showProgress = true;

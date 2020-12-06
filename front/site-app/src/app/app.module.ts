@@ -29,6 +29,7 @@ import { TextEditorModule } from './components/text-editor/text-editor.module';
 import { OnlyAuthorGuard } from './only-author.guard';
 import { NotAuthorComponent } from './components/not-author/not-author.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { HeaderModule } from './components/shared/header/header.module';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyD84KD37S_La_RWQiGwJiZQgpgFtxPm56s',
@@ -70,6 +71,7 @@ firebase.initializeApp(firebaseConfig);
     PipesModule,
     HtmlDialogModule,
     TextEditorModule,
+    HeaderModule,
     // Firebase modules
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
