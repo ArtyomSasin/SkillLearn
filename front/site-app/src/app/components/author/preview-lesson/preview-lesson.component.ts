@@ -15,6 +15,7 @@ export class PreviewLessonComponent implements OnInit {
   courseId: any;
   lessonId: any;
   lesson?: Lesson;
+  userId: string | null = null;
   /** Количество уроков */
   maxOrder = 0;
   showProgress = true;
@@ -34,7 +35,9 @@ export class PreviewLessonComponent implements OnInit {
       console.log(params);
       this.courseId = params.courseId;
       this.lessonId = params.lessonId;
-
+      // Получаем информацию о текущем пользователе
+      const user = await this.authService.getCurrentUser();
+      this.userId = user?.uid ?? null;
       // Получаем информацию о курсе и уроках
       const course = await this.courseService.getCourse(this.courseId, true);
       console.log('course: ', course);

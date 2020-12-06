@@ -1,2 +1,6 @@
 <app-progress-bar [show]="!lesson"></app-progress-bar>
-<app-text-editor *ngIf="lesson" [html]="lesson.content"></app-text-editor>
+<app-text-editor
+  *ngIf="lesson"
+  [html]="lesson.content"
+  [userId]="userId"
+></app-text-editor>

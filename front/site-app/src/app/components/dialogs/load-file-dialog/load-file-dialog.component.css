@@ -1,0 +1,14 @@
+.title {
+  display: flex;
+}
+
+.filepicker {
+  display: none;
+}
+
+.filepicker-img {
+  position: relative;
+  left: -32px;
+  top: 16px;
+  cursor: pointer;
+}

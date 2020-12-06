@@ -1,0 +1,37 @@
+<div style="width: 500px">
+  <div class="title">
+    <h2 mat-dialog-title>{{ data.title }}</h2>
+    <span class="spacer"></span>
+    <mat-icon style="cursor: pointer" matTooltip="Закрыть" mat-dialog-close
+      >close</mat-icon
+    >
+  </div>
+  <img *ngIf="isImage && !buffer" [src]="data.currentFile" />
+  <img *ngIf="isImage && buffer" [src]="buffer" />
+  <div>
+    <input
+      #fileInput
+      type="file"
+      class="filepicker"
+      (change)="selectFile(fileInput.files)"
+      [accept]="types"
+    />
+    <button mat-stroked-button (click)="fileInput.click()" matTooltip="Выбрать">
+      <mat-icon>attach_file</mat-icon>
+    </button>
+  </div>
+  <mat-progress-bar
+    *ngIf="isShowProgress"
+    [value]="progress$ | async"
+    mode="determinate"
+  >
+  </mat-progress-bar>
+  <mat-error *ngIf="error">{{ error }}</mat-error>
+
+  <div class="actions">
+    <button mat-raised-button mat-dialog-close>Отмена</button>
+    <button mat-raised-button color="primary" (click)="success()">
+      Сохранить
+    </button>
+  </div>
+</div>

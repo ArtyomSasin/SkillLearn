@@ -1,8 +1,10 @@
 import { Component, Input, OnInit, } from '@angular/core';
 import { FormControl, } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { FileService } from 'src/app/services/file.service';
 import { ColorGroup } from 'src/app/shared/models/color';
 import { HtmlDialogComponent } from '../dialogs/html-dialog/html-dialog.component';
+import { LoadFileDialogComponent } from '../dialogs/load-file-dialog/load-file-dialog.component';
 import { LinkPickerComponent } from './link-picker/link-picker.component';
 
 @Component({
@@ -12,6 +14,7 @@ import { LinkPickerComponent } from './link-picker/link-picker.component';
 })
 export class TextEditorComponent implements OnInit {
   @Input() html = '';
+  @Input() userId: string | null = null;
 
   formatBlockControl = new FormControl();
   fontFamilyControl = new FormControl();
@@ -179,6 +182,7 @@ export class TextEditorComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
+    private fileService: FileService,
   ) { }
 
   ngOnInit(): void {
@@ -260,7 +264,26 @@ export class TextEditorComponent implements OnInit {
       }
     });
   }
-  private openPhotoDialog(): void { }
+  private openPhotoDialog(): void {
+    if (!this.userId) {
+      throw Error('userId is null');
+    }
+    const filePath = `user-uploads/${this.userId}/`;
+    // Передаем в окно текст ссылки и ее url
+    this.dialog.open(LoadFileDialogComponent, {
+      data: {
+        title: 'Выберите изображение',
+        fileTypes: ['image/*'],
+        upload: (file: File) => this.fileService.upload(file, filePath),
+        exists: (file: File) => this.fileService.isExists(`${filePath}/${file.name}`)
+      }
+    }).afterClosed().subscribe(value => {
+      this.restoreSelection();
+      if (value) {
+        this.addPhoto(value);
+      }
+    });
+  }
   private openTableDialog(): void { }
   private openCodeDialog(): void { }
   private openQuoteDialog(): void { }
@@ -276,9 +299,15 @@ export class TextEditorComponent implements OnInit {
     this.formatDoc('formatblock', 'blockquote');
   }
   /** Вставить ссылку */
-  addLink(model: any): void {
+  private addLink(model: any): void {
     const html = '<a href="' + model.url + '" target="_blank">' + (model.title ?? model.url) + '</a>';
     this.formatDoc('insertHTML', html);
+  }
+
+  /** Вставить изоображение */
+  private addPhoto(url: string): void {
+    const img = `<img src="${url}">`;
+    this.formatDoc('insertHTML', img);
   }
 
   /** Изменение цвета  */
