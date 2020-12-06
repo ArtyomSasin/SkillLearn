@@ -183,7 +183,7 @@
       [disabled]="!menuEnabled"
       (click)="openDialog('link')"
       [checked]="isLinkSelected()"
-      matTooltip="Вставить ссылку"
+      matTooltip="Добавить ссылку"
       value="link"
     >
       <mat-icon>insert_link</mat-icon>
@@ -192,7 +192,7 @@
       [disabled]="!menuEnabled"
       (click)="openDialog('photo')"
       [checked]="false"
-      matTooltip="Вставить изображение"
+      matTooltip="Добавить изображение"
       value="photo"
     >
       <mat-icon>insert_photo</mat-icon>
@@ -202,7 +202,7 @@
       [disabled]="!menuEnabled"
       (click)="openDialog('code')"
       [checked]="false"
-      matTooltip="Вставить код"
+      matTooltip="Добавить код"
       value="code"
     >
       <mat-icon>code</mat-icon>
@@ -212,7 +212,7 @@
       [disabled]="!menuEnabled"
       (click)="openDialog('quote')"
       [checked]="false"
-      matTooltip="Вставить цитату"
+      matTooltip="Добавить цитату"
       value="quote"
     >
       <mat-icon>format_quote</mat-icon>
@@ -222,7 +222,7 @@
       [disabled]="!menuEnabled"
       (click)="openDialog('table')"
       [checked]="false"
-      matTooltip="Вставить таблицу"
+      matTooltip="Добавить таблицу"
       value="table"
     >
       <mat-icon>table_chart</mat-icon>
@@ -285,6 +285,7 @@
   (keydown)="updateMenu()"
   (blur)="editorBlur()"
   (focus)="editorFocus()"
+  (paste)="editorPaste($event)"
   contenteditable="true"
   spellcheck="true"
   [innerHTML]="html"

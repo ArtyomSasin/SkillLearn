@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, } from '@angular/core';
 import { FormControl, } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { FileService } from 'src/app/services/file.service';
 import { ColorGroup } from 'src/app/shared/models/color';
 import { HtmlDialogComponent } from '../dialogs/html-dialog/html-dialog.component';
@@ -182,6 +183,7 @@ export class TextEditorComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
+    private snackBar: MatSnackBar,
     private fileService: FileService,
   ) { }
 
@@ -413,6 +415,22 @@ export class TextEditorComponent implements OnInit {
 
   editorFocus(): void {
     this.menuEnabled = true;
+  }
+
+  editorPaste($event: ClipboardEvent): void {
+    const types = $event.clipboardData?.types ?? [];
+    console.log('types: ', types);
+    if (types.find(t => t.toLowerCase() === 'files')) {
+      this.snackBar.open('Вставка файла из буфера обмена запрещена! Если вы хотите добавить изображение, нажмите "Добавить изображение" в меню.',
+        'ок',
+        {
+          // duration: 3000,
+          panelClass: 'warn',
+          verticalPosition: 'top',
+          horizontalPosition: 'right',
+        });
+      $event.preventDefault();
+    }
   }
 
   /** Восстанавливает фокус в editor на прошлое место */

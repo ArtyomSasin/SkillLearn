@@ -49,6 +49,11 @@ h1 {
   color: #fff;
 }
 
+/* Чтобы надпись action была такого же цвета, что и основной текст snackbar  */
+.mat-snack-bar-container .mat-simple-snackbar-action {
+  color: inherit;
+}
+
 .container {
   max-width: 1024px;
   margin: 0 auto;
