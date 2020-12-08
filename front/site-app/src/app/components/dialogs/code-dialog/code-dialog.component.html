@@ -1,0 +1,23 @@
+<div class="content">
+  <h2>Добавление кода</h2>
+  <mat-form-field appearance="outline" class="row">
+    <mat-label>Язык:</mat-label>
+    <mat-select matInput [formControl]="langControl">
+      <mat-option *ngFor="let lang of this.data.languages" [value]="lang">
+        {{ lang }}
+      </mat-option>
+    </mat-select>
+    <mat-error>Выберите язык</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="row">
+    <mat-label>Код:</mat-label>
+    <textarea matInput [formControl]="codeControl" rows="15"></textarea>
+    <mat-error>Введите код</mat-error>
+  </mat-form-field>
+  <div class="actions">
+    <button mat-raised-button mat-dialog-close>Отмена</button>
+    <button mat-raised-button color="primary" (click)="save()">
+      Сохранить
+    </button>
+  </div>
+</div>

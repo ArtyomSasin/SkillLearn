@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FileService } from 'src/app/services/file.service';
 import { ColorGroup } from 'src/app/shared/models/color';
+import { CodeDialogComponent } from '../dialogs/code-dialog/code-dialog.component';
 import { HtmlDialogComponent } from '../dialogs/html-dialog/html-dialog.component';
 import { LoadFileDialogComponent } from '../dialogs/load-file-dialog/load-file-dialog.component';
 import { LinkPickerComponent } from './link-picker/link-picker.component';
@@ -287,7 +288,50 @@ export class TextEditorComponent implements OnInit {
     });
   }
   private openTableDialog(): void { }
-  private openCodeDialog(): void { }
+  private openCodeDialog(): void {
+    // Если курсор на тэге
+    const ancestor = this.savedRange?.commonAncestorContainer;
+    const tagName = ancestor?.nodeName?.toLowerCase();
+
+    let code; let language;
+    let current = ancestor?.parentElement;
+    console.log('current: ', current);
+
+    // Если tagName - text, смотрим родительский тэг
+    // и если он ссылка, извлекаем url и title
+    if (tagName === '#text') {
+      while (current !== null &&
+        current?.tagName?.toLowerCase() !== 'code') {
+        current = current?.parentElement;
+      }
+      code = current?.textContent;
+      language = current?.getAttribute('lang');
+      console.log('current: ', current);
+    }
+
+    this.dialog.open(CodeDialogComponent, {
+      data: {
+        code,
+        language: language ?? 'dart',
+        languages: ['dart']
+      }
+    }).afterClosed().subscribe(value => {
+      this.restoreSelection();
+      if (value) {
+        console.log('current hemlElement: ', current);
+        console.log('current tag: ', current?.tagName);
+        console.log('parentElement: ', current?.parentElement);
+
+        if (current?.tagName?.toLowerCase() === 'code' &&
+          current?.parentElement?.tagName?.toLowerCase() === 'pre') {
+          current = current.parentElement;
+          console.log('parentElement: ', current);
+          current?.remove();
+        }
+        this.addCode(value.code);
+      }
+    });
+  }
   private openQuoteDialog(): void { }
 
   /** Очистка текста */
@@ -312,6 +356,10 @@ export class TextEditorComponent implements OnInit {
     this.formatDoc('insertHTML', img);
   }
 
+  private addCode(code: string): void {
+    this.formatDoc('insertHTML', code);
+  }
+
   /** Изменение цвета  */
   changeColor(color: string): void {
     this.showColor = false;
@@ -329,7 +377,6 @@ export class TextEditorComponent implements OnInit {
   /** Форматирование документа */
   formatDoc(command: string, value?: string): boolean {
     const result = document.execCommand(command, false, value);
-    console.log('command: ', command, 'value: ', value, 'result: ', result);
     // result = document.queryCommandEnabled(command);
     this.editor?.focus();
     if (!result) {

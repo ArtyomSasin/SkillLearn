@@ -59,6 +59,12 @@ h1 {
   margin: 0 auto;
 }
 
+.actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
 /* Для маленьких экранов */
 @media (max-width: 978px) {
   .container {
@@ -107,8 +113,20 @@ h1 {
 
 .code {
   border-radius: 20px;
-  display: flex;
   margin: 0 20px;
+  padding: 20px;
+}
+
+.code-header {
+  width: 100%;
+}
+
+.code-label {
+  position: relative;
+  font-size: 18px;
+  color: rgb(220, 220, 169);
+  padding: 10px;
+  text-align: right;
 }
 
 .dart.black {

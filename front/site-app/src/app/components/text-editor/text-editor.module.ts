@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { LinkPickerComponent } from './link-picker/link-picker.component';
 import { LoadFileDialogModule } from '../dialogs/load-file-dialog/load-file-dialog.module';
+import { CodeDialogModule } from '../dialogs/code-dialog/code-dialog.module';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import { LoadFileDialogModule } from '../dialogs/load-file-dialog/load-file-dial
     ReactiveFormsModule,
     MaterialModule,
     LoadFileDialogModule,
+    CodeDialogModule,
   ],
   exports: [TextEditorComponent, ColorPickerComponent, LinkPickerComponent],
   declarations: [TextEditorComponent, ColorPickerComponent, LinkPickerComponent]
