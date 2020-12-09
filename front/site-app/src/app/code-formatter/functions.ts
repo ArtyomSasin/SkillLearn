@@ -2,13 +2,18 @@ import { CodeToken } from './models';
 
 /** Функция сортировки токенов по start */
 export function SortCodeToken(t1: CodeToken, t2: CodeToken): number {
-    if (t1.start === t2.start) { return 0; }
-    else if (t1.start > t2.start) { return 1; }
-    else { return -1; }
+    const l1 = t1.value.length;
+    const l2 = t2.value.length;
+    // l1 и l2 сортируем  наоборот (по убыванию)
+    if (t1.start === t2.start) {
+        if (l1 === l2) { return 0; }
+        return l1 > l2 ? -1 : 1;
+    }
+    return t1.start < t2.start ? -1 : 1;
 }
 
 /** Возвращает массив CodeToken[], работает корректно, только если в регулярном выражении все группы обернуты в () */
-export function getMatchesResult(token: string, text: string, regexp: RegExp[], index: number, color: string): CodeToken[] {
+export function getMatchesResult(token: string, text: string, regexp: RegExp[], index: number, className: string): CodeToken[] {
     const result: CodeToken[] = [];
     regexp.forEach(re => {
         const matches = [...matchAll(text, re)];
@@ -17,7 +22,7 @@ export function getMatchesResult(token: string, text: string, regexp: RegExp[], 
                 const val = m[index];
                 const start = indexOfGroup(m, index);
                 const end = start + val.length;
-                const res = { token, start, end, value: val, color };
+                const res = { token, start, end, value: val, className };
                 result.push(res);
             });
         }

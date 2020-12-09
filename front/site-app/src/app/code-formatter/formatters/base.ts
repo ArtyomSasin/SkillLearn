@@ -5,18 +5,38 @@ import { CodeToken, TokenNotEqualError, TokenNotFoundError } from '../models';
 export abstract class BaseCodeFormatter implements ICodeFormatter, ICodeTokenizer {
     language: string;
     tokens: CodeToken[] = [];
-    private COLOR_NOT_TOKEN: string;
-    constructor(language: string, colorNotToken: string = 'rgb(212, 212, 212)') {
+
+    constructor(language: string) {
         this.language = language;
-        this.COLOR_NOT_TOKEN = colorNotToken;
     }
 
+    /** Извлечение токенов */
     public abstract extractTokens(code: string): CodeToken[];
+
+    /** Очищает токены от дубликатов и вхождений друг в друга */
+    public clearDuplicates(tokens: CodeToken[]): CodeToken[] {
+        const result: CodeToken[] = [];
+
+        // Добавляем в новую переменную только те строки, которых нет в Результирующем наборе
+        tokens.forEach(s => {
+            const token = result.find(c => c.start <= s.start && c.end >= s.end);
+            if (!token) {
+                result.push(s);
+                // console.log('add: ', s);
+            } else {
+                console.log('delete: ', s);
+            }
+        });
+        return result;
+    }
 
     public format(code: string): string {
         // Извлекаем токены и сортируем их
         this.tokens = this.extractTokens(code).sort(SortCodeToken);
-
+        console.log('before clear: ', this.tokens);
+        // Очищаем от дубликатов
+        this.tokens = this.clearDuplicates(this.tokens);
+        console.log('after clear: ', this.tokens);
         // Ищем текст, который не был охвачен токенами
         let current = 0;
         const notTokens: CodeToken[] = [];
@@ -25,10 +45,17 @@ export abstract class BaseCodeFormatter implements ICodeFormatter, ICodeTokenize
                 const s = current;
                 const e = t.start;
                 const v = code.slice(s, e);
-                notTokens.push({ token: 'notToken', start: s, end: e, value: v, color: this.COLOR_NOT_TOKEN });
+                notTokens.push(new CodeToken('notToken', s, e, v));
             }
             current = t.end;
         });
+
+        if (current < code.length) {
+            const s = current;
+            const e = code.length;
+            const v = code.slice(s, e);
+            notTokens.push(new CodeToken('notToken', s, e, v));
+        }
 
         console.log('notTokens: ', notTokens);
 
@@ -49,8 +76,8 @@ export abstract class BaseCodeFormatter implements ICodeFormatter, ICodeTokenize
 
         let result = '';
         allTokens.forEach(t => {
-            result = result + `<span style="color: ${t.color}">${t.value}</span>`;
+            result = result + `<span class="${t.className}">${t.value}</span>`;
         });
-        return `<code lang="${this.language}">${result}</code>`;
+        return `<code class="${this.language} code black" lang="${this.language}">${result}</code>`;
     }
 }

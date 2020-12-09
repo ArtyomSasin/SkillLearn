@@ -113,61 +113,63 @@ h1 {
 
 .code {
   border-radius: 20px;
-  margin: 0 20px;
   padding: 20px;
+  white-space: pre;
+  overflow-x: auto;
+  display: inline-block;
+  min-width: 95%;
 }
-
+.code span {
+  font-size: 16px;
+  font-weight: 500;
+}
 .code-header {
   width: 100%;
 }
-
 .code-label {
-  position: relative;
-  font-size: 18px;
-  color: rgb(220, 220, 169);
+  font-size: 24px;
   padding: 10px;
-  text-align: right;
+  text-align: left;
 }
 
+/* disable select */
+.disable-select {
+  user-select: none; /* supported by Chrome and Opera */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+}
+
+/* Начало стилей ЯП dart */
 .dart.black {
   background-color: rgb(30, 30, 30);
-}
-.dart span {
-  font-size: 16px;
-  font-weight: 500;
 }
 .dart .type {
   color: rgb(113, 198, 177);
 }
-
-.dart .val {
-  color: rgb(212, 212, 212);
-}
-
-.dart .symb {
+.dart .symbol {
   color: rgb(147, 147, 147);
 }
-
 .dart .string {
   color: rgb(206, 145, 120);
 }
-
-.dart .int {
+.dart .number {
   color: rgb(176, 200, 163);
 }
-
 .dart .comment {
   color: rgb(87, 113, 70);
 }
-
-.dart .keyword {
+.dart .keyword1 {
   color: rgb(102, 155, 209);
 }
-
-.dart .new {
+.dart .keyword2 {
   color: rgb(188, 138, 189);
 }
-
 .dart .method {
   color: rgb(220, 220, 169);
 }
+.dart .unknown {
+  color: rgb(212, 212, 212);
+}
+/* Конец стилей ЯП dart */

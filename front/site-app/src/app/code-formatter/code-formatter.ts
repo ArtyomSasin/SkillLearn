@@ -13,6 +13,6 @@ export class CodeFormatter {
             throw new Error(`Для данного языка (${language}), не найдено средство форматирования. Доступны следующие языки: ${languages.join('; ')}`);
         }
         const formatCode = formatter.format(code);
-        return `<pre class="${formatter.language} code black"><div class="code-label">Язык: ${language}</div>${formatCode}</pre></br>`;
+        return `<pre contenteditable="false"><div class="code-label disable-select"></div>${formatCode}</pre></br>`;
     }
 }

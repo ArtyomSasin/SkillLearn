@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -10,11 +10,13 @@ import { TokenNotFoundError } from 'src/app/code-formatter/models';
   templateUrl: './code-dialog.component.html',
   styleUrls: ['./code-dialog.component.css']
 })
-export class CodeDialogComponent implements OnInit {
+export class CodeDialogComponent implements OnInit, AfterViewInit {
+  @ViewChild('code') codeRef?: ElementRef;
+
   codeControl = new FormControl(null, [Validators.required]);
   langControl = new FormControl(null, [Validators.required]);
 
-  formatter = new CodeFormatter();
+  private formatter = new CodeFormatter();
 
   constructor(
     public dialogRef: MatDialogRef<CodeDialogComponent>,
@@ -25,6 +27,12 @@ export class CodeDialogComponent implements OnInit {
   ngOnInit(): void {
     this.codeControl.patchValue(this.data.code);
     this.langControl.patchValue(this.data.language);
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.codeRef?.nativeElement?.focus();
+    }, 10);
   }
 
   save(): void {

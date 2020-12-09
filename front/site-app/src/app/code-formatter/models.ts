@@ -1,23 +1,24 @@
+import { Optional } from '@angular/core';
 
 export class CodeToken {
     token: string;
     start: number;
     end: number;
     value: string;
-    color: string;
+    className: string;
 
     constructor(
         token: string,
         start: number,
         end: number,
         value: string,
-        color: string,
+        className: string | null = null,
     ) {
         this.token = token;
         this.start = start;
         this.end = end;
         this.value = value;
-        this.color = color;
+        this.className = className ?? 'unknown';
     }
 }
 

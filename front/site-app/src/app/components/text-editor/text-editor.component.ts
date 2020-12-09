@@ -289,24 +289,32 @@ export class TextEditorComponent implements OnInit {
   }
   private openTableDialog(): void { }
   private openCodeDialog(): void {
-    // Если курсор на тэге
-    const ancestor = this.savedRange?.commonAncestorContainer;
-    const tagName = ancestor?.nodeName?.toLowerCase();
+    const node = this.savedRange?.commonAncestorContainer;
+
+    let current = (node && node as HTMLElement) ? node as HTMLElement : node?.parentElement;
+    let tagName = current?.nodeName?.toLowerCase();
 
     let code; let language;
-    let current = ancestor?.parentElement;
-    console.log('current: ', current);
 
-    // Если tagName - text, смотрим родительский тэг
-    // и если он ссылка, извлекаем url и title
-    if (tagName === '#text') {
-      while (current !== null &&
-        current?.tagName?.toLowerCase() !== 'code') {
-        current = current?.parentElement;
-      }
-      code = current?.textContent;
-      language = current?.getAttribute('lang');
-      console.log('current: ', current);
+    // смотрим родительский тэг
+    if (tagName === '#text' || tagName === 'code' || tagName === 'pre') {
+      do {
+        if (tagName === 'pre') {
+          if (current?.childElementCount ?? 0 >= 2) {
+            current = current?.children[2] as HTMLElement;
+            code = current?.textContent;
+            language = current?.getAttribute('lang');
+          }
+          break;
+        } else if (tagName === 'code') {
+          code = current?.textContent;
+          language = current?.getAttribute('lang');
+          break;
+        } else {
+          current = current?.parentElement ?? null;
+          tagName = current?.tagName?.toLowerCase();
+        }
+      } while (current !== null);
     }
 
     this.dialog.open(CodeDialogComponent, {
@@ -314,18 +322,17 @@ export class TextEditorComponent implements OnInit {
         code,
         language: language ?? 'dart',
         languages: ['dart']
-      }
+      },
+      autoFocus: false,
     }).afterClosed().subscribe(value => {
       this.restoreSelection();
       if (value) {
-        console.log('current hemlElement: ', current);
-        console.log('current tag: ', current?.tagName);
-        console.log('parentElement: ', current?.parentElement);
-
-        if (current?.tagName?.toLowerCase() === 'code' &&
+        // если current - pre или code, удаляем старый контент
+        if (current?.tagName?.toLowerCase() === 'pre') {
+          current?.remove();
+        } else if (current?.tagName?.toLowerCase() === 'code' &&
           current?.parentElement?.tagName?.toLowerCase() === 'pre') {
           current = current.parentElement;
-          console.log('parentElement: ', current);
           current?.remove();
         }
         this.addCode(value.code);

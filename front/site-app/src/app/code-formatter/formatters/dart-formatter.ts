@@ -4,16 +4,8 @@ import { BaseCodeFormatter } from './base';
 
 
 export class DartCodeFormatter extends BaseCodeFormatter {
-    private COLOR_SYMBOL = 'rgb(147, 147, 147)';
-    private COLOR_TYPE = 'rgb(113, 198, 177)';
-    private COLOR_KEYWORD1 = 'rgb(102, 155, 209)';
-    private COLOR_KEYWORD2 = 'rgb(188, 138, 189)';
-    private COLOR_STRING = 'rgb(206, 145, 120)';
-    private COLOR_NUMBER = 'rgb(176, 200, 163)';
-    private COLOR_COMMENT = 'rgb(87, 113, 70)';
-    private COLOR_METHOD = 'rgb(220, 220, 169)';
 
-    /** Классы, определенные пользователем */
+    /** Классы ООП, определенные пользователем */
     private userDefinitions = [
         { name: 'class', regexp: /(class)(\s)+([A-Za-z\_\d]*?)(\s)?(\{)/, groups: [3] },
         { name: 'class', regexp: /(class)(\s+)([A-Za-z\_\d]*?)(\s+)(extends|implements)(\s*)([A-Za-z\_\d]*?)(\{)/, groups: [3, 7] },
@@ -37,17 +29,10 @@ export class DartCodeFormatter extends BaseCodeFormatter {
     ];
 
     private types = [
-        /(^|\W|<)(Symbol)(\s|\.|\;|>)/,
-        /(^|\W|<)(Runes)(\s|\.|\;|>)/,
-        /(^|\W|<)(dynamic)(\s|\.|\;|>)/,
-        /(^|\W|<)(Object)(\s|\.|\;|>)/,
-        /(^|\W|<)(List)(\s|\.|<|\(|\;|>)/,
-        /(^|\W|<)(Set)(\s|\.|<|\;|>)/,
-        /(^|\W|<)(Map)(\s|\.|<\(|\;|>)/,
-        /(^|\W|<)(String)(\s|\.|\;|>)/,
-        /(^|\W|<)(bool)(\s|\.|\;|>)/,
-        /(^|\W|<)(int)(\s|\.|\;|>)/,
-        /(^|\W|<)(double)(\s|\.|\;|>)/,
+        'Symbol', 'Runes', 'dynamic',
+        'Object', 'Set', 'List',
+        'Map', 'String', 'bool',
+        'int', 'double', 'num',
     ];
 
     private keywords1 = [
@@ -74,8 +59,9 @@ export class DartCodeFormatter extends BaseCodeFormatter {
     ];
 
     private strings = [
-        /(('){1,3}((.|\n).*?)('){1,3})/,
-        /(("){1,3}((.|\n).*?)("){1,3})/
+        /(["'])(?:(?=(\\?))\2.)*?\1/, // одинарные кавычки ' и "
+        /("{3})((.|\n)*?)("{3})/,
+        /('{3})((.|\n)*?)('{3})/,
     ];
 
     private numbers = [
@@ -83,7 +69,8 @@ export class DartCodeFormatter extends BaseCodeFormatter {
     ];
 
     private comments = [
-        /(\/\/[\s\w].*)|(\/\*(.|\n)*?\*\/)/
+        /(\/\/.*)/,
+        /(\/\*(.|\n)*?\*\/)/
     ];
 
     private methods = [
@@ -91,17 +78,17 @@ export class DartCodeFormatter extends BaseCodeFormatter {
     ];
 
     constructor() {
-        super('dart', 'rgb(212, 212, 212)');
+        super('dart');
     }
 
     extractTokens(code: string): CodeToken[] {
         // Получаем определенные пользователем классы и типы
         const userDefinitions = this.getUserDefinitions(code);
-        // Добавляем их к регуляркам types
-        for (const ud of userDefinitions) {
-            this.types.push(new RegExp(`(^|\\W|<)(${ud.value.trim()})(\\s|\\.|<|\\(|\;|>)`));
-        }
 
+        // Добавляем их к types
+        for (const ud of userDefinitions) {
+            this.types.push(ud.value.trim());
+        }
         const commentTokens = this.getComments(code);
         const stringTokens = this.getStrings(code);
         const numberTokens = this.getNumbers(code);
@@ -112,33 +99,16 @@ export class DartCodeFormatter extends BaseCodeFormatter {
         const methodTokens = this.getMethods(code);
 
         // Создаем новую переменную и кладем туда коментарии
-        const tokens = [...commentTokens];
-
-        // Добавляем в новую переменную только те строки, которых нет в коментариях
-        stringTokens.forEach(s => {
-            const token = commentTokens.find(c => c.start <= s.start && c.end >= s.end);
-            if (!token) {
-                tokens.push(s);
-            }
-        });
-
-        // В другую переменную засовываем все остальные токены
-        const otherTokens = [...numberTokens]
+        const tokens = [...commentTokens]
+            .concat(stringTokens)
+            .concat(userDefinitions)
             .concat(typeTokens)
+            .concat(methodTokens)
             .concat(keyword1Tokens)
             .concat(keyword2Tokens)
+            .concat(numberTokens)
             .concat(symbolTokens)
-            .concat(methodTokens)
-            .concat(userDefinitions)
             ;
-
-        // Добавляем в новую переменную только те токены, которых нет в tokens
-        otherTokens.forEach(s => {
-            const token = tokens.find(c => c.start <= s.start && c.end >= s.end) ?? null;
-            if (!token) {
-                tokens.push(s);
-            }
-        });
         return tokens;
     }
 
@@ -151,7 +121,7 @@ export class DartCodeFormatter extends BaseCodeFormatter {
                     code,
                     [new RegExp(_.regexp, 'gm')],
                     group,
-                    this.COLOR_TYPE,
+                    'type'
                 );
                 result = result.concat(tokens);
             }
@@ -164,7 +134,7 @@ export class DartCodeFormatter extends BaseCodeFormatter {
             code,
             this.methods.map(_ => new RegExp(_, 'gm')),
             1,
-            this.COLOR_METHOD
+            'method'
         );
     }
     private getSymbols(code: string): CodeToken[] {
@@ -173,7 +143,7 @@ export class DartCodeFormatter extends BaseCodeFormatter {
             code,
             this.symbols.map(_ => new RegExp(_, 'g')),
             0,
-            this.COLOR_SYMBOL
+            'symbol'
         );
     }
     private getKeywords1(code: string): CodeToken[] {
@@ -182,7 +152,7 @@ export class DartCodeFormatter extends BaseCodeFormatter {
             code,
             this.keywords1.map(_ => new RegExp(_, 'g')),
             2,
-            this.COLOR_KEYWORD1
+            'keyword1'
         );
     }
     private getKeywords2(code: string): CodeToken[] {
@@ -191,16 +161,16 @@ export class DartCodeFormatter extends BaseCodeFormatter {
             code,
             this.keywords2.map(_ => new RegExp(_, 'g')),
             2,
-            this.COLOR_KEYWORD2
+            'keyword2'
         );
     }
     private getTypes(code: string): CodeToken[] {
         return getMatchesResult(
             'type',
             code,
-            this.types.map(_ => new RegExp(_, 'g')),
+            this.types.map(_ => new RegExp(`(^|\\W|<)(${_})(\\s|\\.|<|\\(|\;|>)`, 'g')),
             2,
-            this.COLOR_TYPE
+            'type'
         );
     }
     private getComments(code: string): CodeToken[] {
@@ -209,7 +179,7 @@ export class DartCodeFormatter extends BaseCodeFormatter {
             code,
             this.comments.map(_ => new RegExp(_, 'gm')),
             0,
-            this.COLOR_COMMENT
+            'comment'
         );
     }
     private getStrings(code: string): CodeToken[] {
@@ -218,7 +188,7 @@ export class DartCodeFormatter extends BaseCodeFormatter {
             code,
             this.strings.map(_ => new RegExp(_, 'gm')),
             0,
-            this.COLOR_STRING
+            'string'
         );
     }
     private getNumbers(code: string): CodeToken[] {
@@ -227,7 +197,7 @@ export class DartCodeFormatter extends BaseCodeFormatter {
             code,
             this.numbers.map(_ => new RegExp(_, 'g')),
             2,
-            this.COLOR_NUMBER
+            'number'
         );
     }
 }
