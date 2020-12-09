@@ -21,13 +21,14 @@ export class EditLessonComponent implements OnInit {
 
   showProgress = true;
   lessonTypes = LessonTypes;
-
+  userId: string | null = null;
+  content = '';
   form: FormGroup = this.fb.group(
     {
       id: new FormControl(null),
+      authorId: new FormControl(null),
       title: new FormControl(null, [Validators.required]),
       description: new FormControl(null),
-      content: new FormControl(null),
       order: new FormControl(null),
       type: new FormControl(null),
     }
@@ -40,7 +41,6 @@ export class EditLessonComponent implements OnInit {
     private authService: AuthService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -48,7 +48,7 @@ export class EditLessonComponent implements OnInit {
       this.showProgress = true;
       console.log(params);
       const user = await this.authService.getCurrentUser();
-      const userId = user?.uid;
+      this.userId = user?.uid ?? null;
       this.courseId = params.courseId;
       this.lessonId = params.lessonId;
 
@@ -67,17 +67,23 @@ export class EditLessonComponent implements OnInit {
       if (this.lessonId) {
         const lesson = await this.courseService.getLesson(this.lessonId, true);
         this.form.patchValue(lesson);
+        this.content = lesson.content;
       } else {
-        this.form.patchValue({ id: null, authorId: userId, title: '', description: '', type: LessonTypes.theory, order: 0, content: '' });
+        this.form.patchValue({ id: null, authorId: this.userId, title: '', description: '', type: LessonTypes.theory, order: 0 });
+        this.content = '';
       }
 
       this.showProgress = false;
     });
   }
+
+  changeContent(content: string): void {
+    this.content = content;
+  }
   /** Показать превью урока */
   showPreview(): void {
     this.dialog.open(HtmlDialogComponent, {
-      data: this.form.get('content')?.value
+      data: this.content
     });
   }
 
@@ -92,6 +98,7 @@ export class EditLessonComponent implements OnInit {
     this.showProgress = true;
     try {
       const lesson = this.form.getRawValue() as Lesson;
+      lesson.content = this.content;
       if (lesson) {
         if (lesson?.id) {
           await this.courseService.updateLesson(lesson);

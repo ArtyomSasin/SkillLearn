@@ -22,9 +22,6 @@ export abstract class BaseCodeFormatter implements ICodeFormatter, ICodeTokenize
             const token = result.find(c => c.start <= s.start && c.end >= s.end);
             if (!token) {
                 result.push(s);
-                // console.log('add: ', s);
-            } else {
-                console.log('delete: ', s);
             }
         });
         return result;

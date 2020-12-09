@@ -278,17 +278,18 @@
   </div>
 </div>
 
-<div
-  id="editor"
-  class="editor"
-  (mouseup)="updateMenu()"
-  (keydown)="updateMenu()"
-  (blur)="editorBlur()"
-  (focus)="editorFocus()"
-  (paste)="editorPaste($event)"
-  contenteditable="true"
-  spellcheck="true"
-  [innerHTML]="html"
-></div>
-
-<button mat-raised-button (click)="showHtml()">Показать html</button>
+<div class="editor-container">
+  <div class="label">{{ label }}</div>
+  <div
+    id="editor"
+    class="editor"
+    (mouseup)="updateMenu()"
+    (keydown)="updateMenu()"
+    (blur)="editorBlur()"
+    (focus)="editorFocus()"
+    (paste)="editorPaste($event)"
+    contenteditable="true"
+    spellcheck="true"
+    [innerHTML]="html"
+  ></div>
+</div>

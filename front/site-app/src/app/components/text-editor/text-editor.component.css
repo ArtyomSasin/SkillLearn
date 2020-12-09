@@ -1,5 +1,19 @@
+.editor-container {
+  display: block;
+}
+
+.label {
+  top: 0.8em;
+  display: inline-block;
+  padding: 0 4px;
+  position: relative;
+  left: 12px;
+  font: inherit;
+  background: #fff;
+}
+
 .editor {
-  margin: 30px 50px;
+  margin: 0;
   padding: 20px;
   border: 1px solid black;
   border-radius: 6px;
@@ -7,14 +21,13 @@
 }
 
 .menu {
-  padding-top: 20px;
   display: flex;
   flex-wrap: wrap;
 }
 
 .menu > :nth-child(n) {
   margin-right: 10px;
-  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .border-none {

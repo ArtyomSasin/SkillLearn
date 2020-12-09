@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, } from '@angular/core';
 import { FormControl, } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -15,8 +15,10 @@ import { LinkPickerComponent } from './link-picker/link-picker.component';
   styleUrls: ['./text-editor.component.css']
 })
 export class TextEditorComponent implements OnInit {
+  @Input() label = '';
   @Input() html = '';
   @Input() userId: string | null = null;
+  @Output() changeHtml = new EventEmitter<string>();
 
   formatBlockControl = new FormControl();
   fontFamilyControl = new FormControl();
@@ -222,8 +224,12 @@ export class TextEditorComponent implements OnInit {
 
   /** Сбросить форматирование */
   formatClear(): void {
-    this.formatDoc('formatBlock', 'div');
-    this.formatDoc('removeFormat');
+    this.formatDoc('selectAll');
+    // Запоминам selection
+    this.saveSelection();
+    const content = this.savedRange?.cloneContents();
+    const text = content?.textContent;
+    this.formatDoc('insertHTML', text ?? '');
   }
 
   /** Размер шрифта */
@@ -387,10 +393,11 @@ export class TextEditorComponent implements OnInit {
     // result = document.queryCommandEnabled(command);
     this.editor?.focus();
     if (!result) {
-      console.warn(`ошибка форматирования!`);
+      console.warn(`Ошибка форматирования! command: `, command);
     } else {
       this.updateMenu();
     }
+    this.changeHtml?.emit(this.editor?.innerHTML);
     return result;
   }
 
@@ -408,14 +415,6 @@ export class TextEditorComponent implements OnInit {
       return document.queryCommandValue(command);
     }
     return null;
-  }
-
-  showHtml(): void {
-    console.log(`html: ${this.editor?.innerHTML}`);
-    console.log(`text: ${this.editor?.textContent}`);
-    this.dialog.open(HtmlDialogComponent, {
-      data: this.editor?.innerHTML
-    });
   }
 
   updateMenu(): void {
@@ -465,6 +464,7 @@ export class TextEditorComponent implements OnInit {
 
   editorBlur(): void {
     this.menuEnabled = false;
+    this.changeHtml?.emit(this.editor?.innerHTML);
   }
 
   editorFocus(): void {
@@ -484,6 +484,7 @@ export class TextEditorComponent implements OnInit {
           horizontalPosition: 'right',
         });
       $event.preventDefault();
+      this.changeHtml?.emit(this.editor?.innerHTML);
     }
   }
 

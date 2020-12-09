@@ -8,18 +8,6 @@
           Назад к курсу
         </a>
         <span class="spacer"></span>
-        <a
-          mat-raised-button
-          [routerLink]="[
-            '/author',
-            'course',
-            courseId,
-            'preview-lesson',
-            lessonId
-          ]"
-        >
-          Новый редактор
-        </a>
         <button mat-stroked-button color="primary" (click)="showPreview()">
           Предпросмотр
         </button>
@@ -61,10 +49,12 @@
           <mat-label>Тип урока</mat-label>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="row">
-          <textarea matInput formControlName="content" rows="30"></textarea>
-          <mat-label>Контент</mat-label>
-        </mat-form-field>
+        <app-text-editor
+          label="Контент"
+          [html]="content"
+          [userId]="userId"
+          (changeHtml)="changeContent($event)"
+        ></app-text-editor>
       </form>
     </div>
   </div>
