@@ -11,7 +11,7 @@
 }
 
 .actions {
-  display: flex;
+  margin-top: 0;
 }
 
 .actions :nth-child(n) {

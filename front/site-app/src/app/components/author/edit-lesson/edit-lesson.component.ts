@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { CourseService } from 'src/app/services/course.service';
 import { Lesson, LessonTypes } from 'src/app/shared/models/lesson';
 import { HtmlDialogComponent } from '../../dialogs/html-dialog/html-dialog.component';
+import { TextEditorComponent } from '../../text-editor/text-editor.component';
 
 @Component({
   selector: 'app-edit-lesson',
@@ -14,6 +15,8 @@ import { HtmlDialogComponent } from '../../dialogs/html-dialog/html-dialog.compo
   styleUrls: ['./edit-lesson.component.css']
 })
 export class EditLessonComponent implements OnInit {
+
+  @ViewChild('contentEditor') editorRef?: any;
   courseId: any;
   lessonId: any;
   /** Количество уроков */
@@ -77,14 +80,16 @@ export class EditLessonComponent implements OnInit {
     });
   }
 
-  changeContent(content: string): void {
-    this.content = content;
-  }
   /** Показать превью урока */
   showPreview(): void {
+    const content = this.getEditorContent();
     this.dialog.open(HtmlDialogComponent, {
-      data: this.content
+      data: content
     });
+  }
+
+  getEditorContent(): string {
+    return this.editorRef?.content;
   }
 
   /** Возвращает массив orders, полученный из maxOrder */
@@ -98,7 +103,7 @@ export class EditLessonComponent implements OnInit {
     this.showProgress = true;
     try {
       const lesson = this.form.getRawValue() as Lesson;
-      lesson.content = this.content;
+      lesson.content = this.getEditorContent();
       if (lesson) {
         if (lesson?.id) {
           await this.courseService.updateLesson(lesson);
