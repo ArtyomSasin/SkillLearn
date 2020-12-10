@@ -177,7 +177,6 @@
   <mat-button-toggle-group
     name="addItem"
     onmousedown="event.preventDefault();"
-    (change)="openDialog($event.value)"
   >
     <mat-button-toggle
       [disabled]="!menuEnabled"
@@ -220,12 +219,22 @@
 
     <mat-button-toggle
       [disabled]="!menuEnabled"
-      (click)="openDialog('table')"
+      (click)="openDialog('ol')"
       [checked]="false"
-      matTooltip="Добавить таблицу"
-      value="table"
+      matTooltip="Добавить пронумерованный список"
+      value="ol"
     >
-      <mat-icon>table_chart</mat-icon>
+      <mat-icon>format_list_numbered</mat-icon>
+    </mat-button-toggle>
+
+    <mat-button-toggle
+      [disabled]="!menuEnabled"
+      (click)="openDialog('ul')"
+      [checked]="false"
+      matTooltip="Добавить маркированный список"
+      value="ul"
+    >
+      <mat-icon>format_list_bulleted</mat-icon>
     </mat-button-toggle>
   </mat-button-toggle-group>
 

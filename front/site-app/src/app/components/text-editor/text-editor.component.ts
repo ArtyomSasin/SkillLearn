@@ -298,7 +298,16 @@ export class TextEditorComponent implements OnInit {
       }
     });
   }
-  private openTableDialog(): void { }
+  private addOrderedList(): void {
+    // Запоминам selection
+    this.saveSelection();
+    this.formatDoc('insertOrderedList');
+  }
+  private addUnorderedList(): void {
+    // Запоминам selection
+    this.saveSelection();
+    this.formatDoc('insertUnorderedList');
+  }
   private openCodeDialog(): void {
     // Запоминам selection
     this.saveSelection();
@@ -339,7 +348,6 @@ export class TextEditorComponent implements OnInit {
       autoFocus: false,
     }).afterClosed().subscribe(value => {
       this.restoreSelection();
-      console.log('current: ', current);
       if (value) {
         // если current - pre или code, удаляем старый контент
         if (current?.tagName?.toLowerCase() === 'pre') {
@@ -356,7 +364,8 @@ export class TextEditorComponent implements OnInit {
   private openQuoteDialog(): void {
     // Запоминам selection
     this.saveSelection();
-    this.formatDoc('formatblock', 'blockquote');
+    // вставляем цитату
+    this.addBlockquote();
   }
 
   /** Очистка текста */
@@ -462,20 +471,21 @@ export class TextEditorComponent implements OnInit {
   }
 
   openDialog(dialogType: string): void {
+    console.log('openDialog() ', dialogType);
     if (!this.menuEnabled) { return; }
     switch (dialogType) {
       case 'link': this.openLinkDialog(); break;
       case 'photo': this.openPhotoDialog(); break;
       case 'code': this.openCodeDialog(); break;
       case 'quote': this.openQuoteDialog(); break;
-      case 'table': this.openTableDialog(); break;
+      case 'ol': this.addOrderedList(); break;
+      case 'ul': this.addUnorderedList(); break;
       default: console.warn('Неизвестная комманда: ', dialogType);
     }
   }
 
   editorBlur(): void {
     this.menuEnabled = false;
-    console.log('editor blure');
   }
 
   editorFocus(): void {
@@ -484,7 +494,6 @@ export class TextEditorComponent implements OnInit {
 
   editorPaste($event: ClipboardEvent): void {
     const types = $event.clipboardData?.types ?? [];
-    console.log('types: ', types);
     if (types.find(t => t.toLowerCase() === 'files')) {
       this.snackBar.open('Вставка файла из буфера обмена запрещена! Если вы хотите добавить изображение, нажмите "Добавить изображение" в меню.',
         'ок',
