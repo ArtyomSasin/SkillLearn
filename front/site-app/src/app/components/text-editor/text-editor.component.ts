@@ -353,7 +353,11 @@ export class TextEditorComponent implements OnInit {
       }
     });
   }
-  private openQuoteDialog(): void { }
+  private openQuoteDialog(): void {
+    // Запоминам selection
+    this.saveSelection();
+    this.formatDoc('formatblock', 'blockquote');
+  }
 
   /** Очистка текста */
   clearText(): void {
