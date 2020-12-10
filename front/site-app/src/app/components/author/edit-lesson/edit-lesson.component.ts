@@ -100,10 +100,12 @@ export class EditLessonComponent implements OnInit {
 
   /** Создание нового урока / редактировани существующего */
   async save(): Promise<void> {
+    const content = this.getEditorContent();
+    this.content = content;
     this.showProgress = true;
     try {
       const lesson = this.form.getRawValue() as Lesson;
-      lesson.content = this.getEditorContent();
+      lesson.content = content;
       if (lesson) {
         if (lesson?.id) {
           await this.courseService.updateLesson(lesson);
